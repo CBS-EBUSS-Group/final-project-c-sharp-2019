@@ -1,5 +1,5 @@
 # env
-.ENV.cs
+final_project/ENV.cs
 
 # globs
 Makefile.in
