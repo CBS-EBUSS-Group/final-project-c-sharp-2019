@@ -6,7 +6,8 @@ namespace final_project
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            // Create Seed Database (necessary only once) ==> comment out after
+            Seed.CreateSeedDatabase();
         }
     }
 }
