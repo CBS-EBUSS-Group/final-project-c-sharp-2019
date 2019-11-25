@@ -10,8 +10,8 @@ namespace final_project
             Console.WriteLine("Connecting to SQLite Database");
             db.Connect();
 
-            //Console.WriteLine("Creating Database Schema...");
-            //db.CreateSchema();
+            Console.WriteLine("Creating Database Schema...");
+            db.CreateSchema();
 
             Console.WriteLine("Creating Seed Database...");
             db.CreateSeed();
