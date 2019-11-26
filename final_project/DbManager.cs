@@ -27,39 +27,79 @@ namespace final_project
             Connection.Close();
         }
 
-        public void CreateSchema()
+        private bool DbExists()
         {
+            bool dbExists = false;
+
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            StringBuilder command = new StringBuilder();
-
-            string lawyerSchema = "CREATE TABLE lawyers (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, birthdate TEXT NOT NULL, seniority TEXT NOT NULL, specialization TEXT NOT NULL, date_joined TEXT NOT NULL);";
-            string receptionistSchema = "CREATE TABLE receptionists (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL);";
-
-            command.Append(lawyerSchema).Append(receptionistSchema);
-
-            dbcmd.CommandText = command.ToString();
-
-            dbcmd.ExecuteNonQuery();
-            
-        }
-
-        public void CreateSeed()
-        {
-            IDbCommand dbcmd = Connection.CreateCommand();
-
-            string command = System.IO.File.ReadAllText(ENV.GetSeedData());
+            string command = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='lawyers';";
 
             dbcmd.CommandText = command;
-
+            
             try
             {
-                dbcmd.ExecuteNonQuery();
+                IDataReader reader = dbcmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    dbExists = reader.GetInt32(0) != 0;
+                }
+
+                return dbExists;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Database error: {ex.Message}");
             }
+
+            return true;
+        }
+
+        //public void CreateSchema()
+        //{
+        //    if (!DbExists())
+        //    {
+        //        IDbCommand dbcmd = Connection.CreateCommand();
+
+        //        StringBuilder command = new StringBuilder();
+
+        //        string lawyerSchema = "CREATE TABLE lawyers (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, birthdate TEXT NOT NULL, seniority TEXT NOT NULL, specialization TEXT NOT NULL, date_joined TEXT NOT NULL);";
+        //        string receptionistSchema = "CREATE TABLE receptionists (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL);";
+
+        //        command.Append(lawyerSchema).Append(receptionistSchema);
+
+        //        dbcmd.CommandText = command.ToString();
+
+        //        dbcmd.ExecuteNonQuery();
+        //    }
+        //}
+
+        public void CreateSeed()
+        {
+            if (!DbExists())
+            {
+                IDbCommand dbcmd = Connection.CreateCommand();
+
+                string command = System.IO.File.ReadAllText(ENV.GetSeedData());
+
+                dbcmd.CommandText = command;
+
+                try
+                {
+                    Console.WriteLine("Creating Database Schema...");
+                    Console.WriteLine("Creating Seed Database...");
+                    dbcmd.ExecuteNonQuery();
+                    Console.WriteLine("Data entries added to database.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while creating seed database: {ex.Message}");
+                }
+            }
+            else
+                Console.WriteLine("Local database already has entries. Stopped seeding process.");
+            
         }
 
         // gets all the appointments for the day

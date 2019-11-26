@@ -1,3 +1,5 @@
+CREATE TABLE lawyers (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, birthdate TEXT NOT NULL, seniority TEXT NOT NULL, specialization TEXT NOT NULL, date_joined TEXT NOT NULL);
+CREATE TABLE receptionists (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL);
 BEGIN TRANSACTION;
 INSERT INTO receptionists ('id', 'first_name', 'last_name', 'date_joined')
 VALUES(2, 'James', 'Franco', '2000-01-01');
@@ -5,5 +7,14 @@ INSERT INTO lawyers('id', 'first_name', 'last_name', 'birthdate', 'seniority', '
 VALUES
   (1, 'Dorian', 'Nguyen', '1995-03-24', 'senior', 'corporate', '2019-11-22'),
   (2, 'Dominik', 'Gadesmann', '1994-11-26', 'senior', 'family', '2019-11-22'),
-  (3, 'Maxwell', 'Burda', '1996-03-07', 'senior', 'criminal', '2019-11-22');
+  (3, 'Maxwell', 'Burda', '1996-03-07', 'senior', 'criminal', '2019-11-22'),
+  (4, 'Peter', 'Parker', '2000-01-01', 'junior', 'corporate', '2020-01-01'),
+  (5, 'John', 'Doe', '2000-01-02', 'junior', 'corporate', '2020-01-01'),
+  (6, 'Jane', 'Harris', '2000-01-03', 'junior', 'corporate', '2020-01-01'),
+  (7, 'Bruce', 'Wayne', '2000-01-04', 'junior', 'family', '2020-01-01'),
+  (8, 'James', 'Cordon', '2000-01-05', 'junior', 'family', '2020-01-01'),
+  (9, 'Keanu', 'Reeves', '2000-01-06', 'junior', 'family', '2020-01-01'),
+  (10, 'Michael', 'Phelps', '2000-01-07', 'junior', 'criminal', '2020-01-01'),
+  (11, 'Jordan', 'Belfort', '2000-01-08', 'junior', 'criminal', '2020-01-01'),
+  (12, 'Angelina', 'Jolie', '2000-01-09', 'junior', 'criminal', '2020-01-01');
 COMMIT;

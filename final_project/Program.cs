@@ -6,8 +6,7 @@ namespace final_project
     {
         public static void Main(string[] args)
         {
-            // Create Seed Database (necessary only once) ==> comment out after
-            Seed.CreateSeedDatabase();
+            Seed.CreateSeedDatabase(); // only creates schema and data entries, if there is no 'lawyer' table in the database == no data :)
         }
     }
 }
