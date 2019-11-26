@@ -46,6 +46,8 @@ namespace final_project
                     dbExists = reader.GetInt32(0) != 0;
                 }
 
+                reader.Close();
+
                 return dbExists;
             }
             catch (Exception ex)
@@ -113,9 +115,31 @@ namespace final_project
             Console.WriteLine("Appointment set");
         }
 
-        public void GetAllAppointments()
+        public void GetAllAppointments(int lawyerId)
         {
-            Console.WriteLine("Getting all appointments");
+            string clientName = "";
+            string dateTime = "";
+            string meetingRoom = "";
+
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string query = $"SELECT name, date_time, meeting_room FROM appointments INNER JOIN clients ON clients.id = appointments.client_id WHERE appointments.lawyer_id = {lawyerId}";
+
+            dbcmd.CommandText = query;
+
+            IDataReader reader = dbcmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                clientName = reader.GetString(0);
+                dateTime = reader.GetString(1);
+                meetingRoom = reader.GetString(2);
+                // figure out how to read multiple database rows, implement.
+            }
+
+            reader.Close();
+
+            Console.WriteLine($"client: {clientName}\ntime: {dateTime}\nroom: {meetingRoom}");
         }
 
         public void GetAllClients()

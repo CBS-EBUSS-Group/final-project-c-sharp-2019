@@ -13,8 +13,10 @@ namespace final_project
             //Console.WriteLine("Creating Database Schema...");
             //db.CreateSchema();
 
-            db.CreateSeed();
-            
+            //db.CreateSeed();
+
+            db.GetAllAppointments(3);
+
             db.Disconnect();
             Console.WriteLine("Disconnected from Database.");
         }
