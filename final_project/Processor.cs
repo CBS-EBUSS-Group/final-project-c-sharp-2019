@@ -41,6 +41,12 @@ namespace final_project
             string password = Console.ReadLine();
 
             user = db.Login(username, password);
+
+            if (user == null)
+            {
+                Console.WriteLine();
+                LoginProcess();
+            }
         }
 
         private void LawyerProgramFlow()

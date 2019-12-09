@@ -271,9 +271,9 @@ namespace final_project
         }
 
         // Receptionist, Lawyer, AdminStaff >>> lists all appointments ...done
-        public List<string> GetAllAppointments()
+        public List<Appointment> GetAllAppointments()
         {
-            List<string> consoleText = new List<string>();
+            List<Appointment> appointments = new List<Appointment>();
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
@@ -287,17 +287,16 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        string appointmentPrompt = $"name: {reader.GetString(0)}\ntime: {reader.GetString(1)}\nroom: {reader.GetString(2)}";
+                        Appointment appointment = new Appointment(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
 
-                        consoleText.Add(appointmentPrompt);
-
+                        appointments.Add(appointment);
                     }
                 } while (reader.NextResult());
 
                 reader.Close();
             }
 
-            return consoleText;
+            return appointments;
         }
 
         // Receptionist >>> lists all appointments for a selected date ...done
