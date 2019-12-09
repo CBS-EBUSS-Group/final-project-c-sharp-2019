@@ -23,7 +23,9 @@ namespace final_project
             foreach (string entry in listOfCases)
             {
                 Console.WriteLine(entry);
+                
             }
+            Console.WriteLine();
         }
 
         public override void ListAllAppointments(DbManager db)
@@ -35,6 +37,7 @@ namespace final_project
             {
                 Console.WriteLine(entry);
             }
+            Console.WriteLine();
         }
 
 

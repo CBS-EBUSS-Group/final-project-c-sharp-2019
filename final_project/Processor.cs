@@ -50,7 +50,7 @@ namespace final_project
             do
             {
                 user.Greeting();
-                Console.WriteLine("1) Add new case\n2) List all cases\n3) List all appointments");
+                Console.WriteLine("1) Add new case\n2) List all cases\n3) List all appointments\n4) Exit program");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -58,16 +58,22 @@ namespace final_project
                     case "1":
                         user.AddNewCase(db);
                         condition++;
+                        LawyerProgramFlow();
                         break;
 
                     case "2":
                         user.ListAllCases(db);
                         condition++;
+                        LawyerProgramFlow();
                         break;
 
                     case "3":
                         user.ListAllAppointments(db);
                         condition++;
+                        LawyerProgramFlow();
+                        break;
+                    case "4":
+                        Environment.Exit(0);
                         break;
 
                     default:
@@ -84,7 +90,7 @@ namespace final_project
             do
             {
                 user.Greeting();
-                Console.WriteLine("1) List all cases\n2) List all appointments");
+                Console.WriteLine("1) List all cases\n2) List all appointments\n3) Exit program");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -92,11 +98,17 @@ namespace final_project
                     case "1":
                         user.ListAllCases(db);
                         condition++;
+                        AdminProgramFlow();
                         break;
 
                     case "2":
                         user.ListAllAppointments(db);
                         condition++;
+                        AdminProgramFlow();
+                        break;
+
+                    case "3":
+                        Environment.Exit(0);
                         break;
 
                     default:
@@ -114,7 +126,7 @@ namespace final_project
             do
             {
                 user.Greeting();
-                Console.WriteLine("1) Register a new client\n2) Add new appointment\n3) List all appointments\n4) List all appointments of a specific date\n5) List all clients");
+                Console.WriteLine("1) Register a new client\n2) Add new appointment\n3) List all appointments\n4) List all appointments of a specific date\n5) List all clients\n6) Exit program");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -122,25 +134,34 @@ namespace final_project
                     case "1":
                         user.AddNewClient(db);
                         condition++;
+                        ReceptionistProgramFlow();
                         break;
 
                     case "2":
                         user.AddNewAppointment(db);
                         condition++;
+                        ReceptionistProgramFlow();
                         break;
                     case "3":
                         user.ListAllAppointments(db);
                         condition++;
+                        ReceptionistProgramFlow();
                         break;
 
                     case "4":
                         user.ListDailyAppointments(db);
                         condition++;
+                        ReceptionistProgramFlow();
                         break;
 
                     case "5":
                         user.ListAllClients(db);
                         condition++;
+                        ReceptionistProgramFlow();
+                        break;
+
+                    case "6":
+                        Environment.Exit(0);
                         break;
 
                     default:
