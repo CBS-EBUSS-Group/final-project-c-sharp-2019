@@ -57,7 +57,7 @@ namespace final_project
             {
                 Console.WriteLine(entry);
             }
-
+            Console.WriteLine();
         }
 
         public override void ListDailyAppointments(DbManager db)
@@ -71,6 +71,7 @@ namespace final_project
             {
                 Console.WriteLine(entry);
             }
+            Console.WriteLine();
         }
 
         public override void ListAllClients(DbManager db)
@@ -82,6 +83,7 @@ namespace final_project
             {
                 Console.WriteLine(entry);
             }
+            Console.WriteLine();
         }
     }
 }

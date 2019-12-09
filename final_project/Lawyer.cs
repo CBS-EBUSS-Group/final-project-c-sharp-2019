@@ -49,7 +49,7 @@ namespace final_project
             {
                 Console.WriteLine(entry);
             }
-
+            Console.WriteLine();
         }
 
 
@@ -62,6 +62,7 @@ namespace final_project
             {
                 Console.WriteLine(entry);
             }
+            Console.WriteLine();
         }
 
     }
