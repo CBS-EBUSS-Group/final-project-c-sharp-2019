@@ -31,15 +31,18 @@ namespace final_project
         public override void ListAllAppointments(DbManager db)
         {
             Console.WriteLine("You have chosen to list all appointments.\n");
-            List<string> listOfAppointments = db.GetAllAppointments();
+            //List<string> listOfAppointments = db.GetAllAppointments();
 
-            foreach (string entry in listOfAppointments)
+            List<Appointment> appointmentList = db.GetAllAppointments();
+
+            foreach (Appointment appointment in appointmentList)
             {
-                Console.WriteLine(entry);
+                Console.WriteLine(appointment);
+
             }
             Console.WriteLine();
-        }
 
+        }
 
     }
 }

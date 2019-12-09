@@ -79,6 +79,7 @@ namespace final_project
                         LawyerProgramFlow();
                         break;
                     case "4":
+                        db.Disconnect();
                         Environment.Exit(0);
                         break;
 
@@ -114,6 +115,7 @@ namespace final_project
                         break;
 
                     case "3":
+                        db.Disconnect();
                         Environment.Exit(0);
                         break;
 
@@ -167,6 +169,7 @@ namespace final_project
                         break;
 
                     case "6":
+                        db.Disconnect();
                         Environment.Exit(0);
                         break;
 
