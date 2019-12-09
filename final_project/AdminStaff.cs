@@ -32,13 +32,12 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to list all appointments.\n");
             //List<string> listOfAppointments = db.GetAllAppointments();
-
+            
             List<Appointment> appointmentList = db.GetAllAppointments();
 
             foreach (Appointment appointment in appointmentList)
             {
-                Console.WriteLine(appointment);
-
+               //
             }
             Console.WriteLine();
 

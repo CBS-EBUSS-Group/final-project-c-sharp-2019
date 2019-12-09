@@ -1,11 +1,11 @@
 BEGIN TRANSACTION;
 CREATE TABLE credentials (username TEXT PRIMARY KEY, password TEXT NOT NULL, type TEXT NOT NULL);
-CREATE TABLE lawyers (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, birthdate TEXT NOT NULL, seniority INTEGER NOT NULL, specialization INTEGER NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
-CREATE TABLE receptionists (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
-CREATE TABLE admins (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, role INT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
-CREATE TABLE appointments (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, lawyer_id INTEGER NOT NULL, date_time TEXT NOT NULL, meeting_room TEXT NOT NULL);
-CREATE TABLE clients (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, birthdate TEXT NOT NULL, case_type INTEGER NOT NULL, street TEXT NOT NULL, zip TEXT NOT NULL, city TEXT NOT NULL);
-CREATE TABLE cases (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, type INTEGER NOT NULL, start_date TEXT NOT NULL, total_charges TEXT NOT NULL);
+CREATE TABLE lawyers (lawyer_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, birthdate TEXT NOT NULL, seniority INTEGER NOT NULL, specialization INTEGER NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE receptionists (receptionist_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE admins (admin_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, role INT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE appointments (appointment_id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, lawyer_id INTEGER NOT NULL, date_time TEXT NOT NULL, meeting_room TEXT NOT NULL);
+CREATE TABLE clients (client_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, birthdate TEXT NOT NULL, case_type INTEGER NOT NULL, street TEXT NOT NULL, zip TEXT NOT NULL, city TEXT NOT NULL);
+CREATE TABLE cases (case_id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, type INTEGER NOT NULL, start_date TEXT NOT NULL, total_charges TEXT NOT NULL);
 INSERT INTO credentials ('username', 'password', 'type')
 VALUES
   ('lawyer1', 'rootaccess', 'lawyer'),
