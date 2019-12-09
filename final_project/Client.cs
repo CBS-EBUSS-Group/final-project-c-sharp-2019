@@ -5,19 +5,16 @@ namespace final_project
     {
 
         private int Id;
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
+        private string Name { get; set; }
         private readonly DateTime DOB;
         private string CaseType { get; set; }
         private string Street { get; set; }
         private int Zip { get; set; }
         private string City { get; set; }
 
-        public Client(string firstName, string lastName, DateTime dob, string caseType, string street, int zip, string city)
+        public Client(string name, DateTime dob, string caseType, string street, int zip, string city)
         {
-           
-            FirstName = firstName;
-            LastName = lastName;
+            Name = name;
             DOB = dob;
             CaseType = caseType;
             Street = street;
@@ -32,7 +29,7 @@ namespace final_project
 
         public override string ToString()
         {
-            return $"First Name: {FirstName},\nLast Name: {LastName},\n Date of birth: {DOB},\nCasetype on: {CaseType},\nStreet: {Street},\nZIP: {Zip},\nCity: {City}.";
+            return $"Name: {Name},\n Date of birth: {DOB},\nCasetype on: {CaseType},\nStreet: {Street},\nZIP: {Zip},\nCity: {City}.";
         }
     }
 }
