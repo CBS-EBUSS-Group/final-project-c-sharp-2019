@@ -3,25 +3,42 @@ namespace final_project
 {
     public class Appointment
     {
-        protected int Id { get; set; }
-        protected int ClientId { get; set; }
-        protected int LawyerId { get; set; }
-        protected DateTime DateTime { get; set; }
-        protected string MeetingRoom { get; set; }
+        private int Id;
+        private int ClientId;
+        private int LawyerId;
+        private string ClientName { get; set; }
+        private string LawyerName { get; set; }
+        private DateTime DateTime { get; set; }
+        private string MeetingRoom { get; set; }
+        
 
 
-        public Appointment(int id, int clientId, int lawyerId, DateTime dateTime, string meetingRoom)
+        public Appointment(string clientName, string lawyerName, DateTime dateTime, string meetingRoom)
         {
-            Id = id;
-            ClientId = clientId;
-            LawyerId = lawyerId;
+            ClientName = clientName;
+            LawyerName = lawyerName;
             DateTime = dateTime;
             MeetingRoom = meetingRoom;
         }
 
+        public void SetId(int id)
+        {
+            Id = id;
+        }
+
+        public void SetClientId(int clientId)
+        {
+            ClientId = clientId;
+        }
+
+        public void SetLawyertId(int lawyerId)
+        {
+            LawyerId = lawyerId;
+        }
+
         public override string ToString()
         {
-            return $"ID: {Id}, ClientID: {ClientId}, LawyerID: {LawyerId}, Datetime {DateTime}, MeetingRoom: {MeetingRoom}";
+            return $"ID: {Id}, Client name: {ClientName}, Lawyer name: {LawyerName}, Datetime {DateTime.ToLongTimeString()}, MeetingRoom: {MeetingRoom}";
         }
     }
 }

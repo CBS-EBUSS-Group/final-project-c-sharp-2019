@@ -4,18 +4,18 @@ namespace final_project
     public class Client
     {
 
-        protected int Id { get; set; }
-        protected string FirstName { get; set; }
-        protected string LastName { get; set; }
-        protected DateTime DOB { get; set; }
-        protected string CaseType { get; set; }
-        protected string Street { get; set; }
-        protected int Zip { get; set; }
-        protected string City { get; set; }
+        private int Id;
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
+        private readonly DateTime DOB;
+        private string CaseType { get; set; }
+        private string Street { get; set; }
+        private int Zip { get; set; }
+        private string City { get; set; }
 
-        public Client(int id, string firstName, string lastName, DateTime dob, string caseType, string street, int zip, string city)
+        public Client(string firstName, string lastName, DateTime dob, string caseType, string street, int zip, string city)
         {
-            Id = id;
+           
             FirstName = firstName;
             LastName = lastName;
             DOB = dob;
@@ -23,6 +23,16 @@ namespace final_project
             Street = street;
             Zip = zip;
             City = city;
+        }
+
+        public void SetId(int id)
+        {
+            Id = id;
+        }
+
+        public override string ToString()
+        {
+            return $"First Name: {FirstName},\nLast Name: {LastName},\n Date of birth: {DOB},\nCasetype on: {CaseType},\nStreet: {Street},\nZIP: {Zip},\nCity: {City}.";
         }
     }
 }
