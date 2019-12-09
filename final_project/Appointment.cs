@@ -31,7 +31,7 @@ namespace final_project
             ClientId = clientId;
         }
 
-        public void SetLawyertId(int lawyerId)
+        public void SetLawyerId(int lawyerId)
         {
             LawyerId = lawyerId;
         }

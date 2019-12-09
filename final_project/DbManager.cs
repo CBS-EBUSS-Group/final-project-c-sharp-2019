@@ -212,7 +212,16 @@ namespace final_project
             return null; // Null if the database could not find the record.
         }
 
-        // Receptionist >>> registers new client
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+        // Receptionist >>> registers new client >>> DONE
         public void SetClient(string name, DateTime bday, string caseType, string street, string zip, string city)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
@@ -245,10 +254,11 @@ namespace final_project
         }
 
         // Receptionist >>> adds a new appointment
-        public void SetAppointment(string clientName, string lawyerLastName, DateTime date, string meetingRoom)
+        public void SetAppointment(string clientName, string lawyerName, DateTime date, string meetingRoom)
         {
+
             int clientId = GetIdFromTableByColumn("clients", clientName, "name");
-            int lawyerId = GetIdFromTableByColumn("lawyers", lawyerLastName, "last_name");
+            int lawyerId = GetIdFromTableByColumn("lawyers", lawyerName.Split()[1], "last_name");
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
@@ -270,14 +280,14 @@ namespace final_project
             // check whether lawyer is available
         }
 
-        // Receptionist, Lawyer, AdminStaff >>> lists all appointments ...done
+        // Receptionist, Lawyer, AdminStaff >>> lists all appointments >>> DONE
         public List<Appointment> GetAllAppointments()
         {
-            List<Appointment> appointments = new List<Appointment>();
+            List<Appointment> appointmentList = new List<Appointment>();
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = $"SELECT name, date_time, meeting_room FROM appointments INNER JOIN clients ON clients.id = appointments.client_id";
+            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.id = appointments.client_id";
 
             dbcmd.CommandText = query;
 
@@ -287,29 +297,31 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        Appointment appointment = new Appointment(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetInt32(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
+                        appointment.SetLawyerId(reader.GetInt32(5));
+                        appointment.SetClientId(reader.GetInt32(6));
 
-                        appointments.Add(appointment);
+                        appointmentList.Add(appointment);
                     }
                 } while (reader.NextResult());
 
                 reader.Close();
             }
 
-            return appointments;
+            return appointmentList;
         }
 
-        // Receptionist >>> lists all appointments for a selected date ...done
-        public List<string> GetDailyAppointments(DateTime day)
+        // Receptionist >>> lists all appointments for a selected date >>> DONE
+        public List<Appointment> GetDailyAppointments(DateTime day)
         {
-            List<string> consoleText = new List<string>();
+            List<Appointment> appointmentList = new List<Appointment>();
 
             string startOfDay = $"'{day.Year}-{day.Month}-{day.Day} 00:00:00'";
             string endOfDay = $"'{day.Year}-{day.Month}-{day.Day} 23:59:59'";
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = $"SELECT name, date_time, meeting_room FROM appointments INNER JOIN clients ON clients.id = appointments.client_id WHERE strftime('%Y-%m-%d %H:%M:%S', date_time) BETWEEN {startOfDay} AND {endOfDay}";
+            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.id = appointments.client_id WHERE strftime('%Y-%m-%d %H:%M:%S', date_time) BETWEEN {startOfDay} AND {endOfDay}";
 
             dbcmd.CommandText = query;
 
@@ -319,17 +331,18 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        string appointmentPrompt = $"name: {reader.GetString(0)}\ntime: {reader.GetString(1)}\nroom: {reader.GetString(2)}";
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetInt32(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
+                        appointment.SetLawyerId(reader.GetInt32(5));
+                        appointment.SetClientId(reader.GetInt32(6));
 
-                        consoleText.Add(appointmentPrompt);
-
+                        appointmentList.Add(appointment);
                     }
                 } while (reader.NextResult());
 
                 reader.Close();
             }
 
-            return consoleText;
+            return appointmentList;
         }
 
         // Receptionist >>> lists all clients ...done
@@ -392,6 +405,11 @@ namespace final_project
             }
 
             return consoleText;
+        }
+
+        public void GetAllCasesById()
+        {
+            // code
         }
 
         // returns a client statt void, aber Dorian hat die client class noch nicht erstellt
