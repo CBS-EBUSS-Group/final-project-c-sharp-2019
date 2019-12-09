@@ -29,8 +29,8 @@ namespace final_project
             string clientName = Console.ReadLine();
             Console.WriteLine("Casetype:");
             string caseType = Console.ReadLine();
-            Console.WriteLine("Date:");
-            DateTime date = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine("Date yyyy-MM-dd:");
+            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", null);
             Console.WriteLine("Total Charges:");
             string totalCharges = Console.ReadLine();
 
