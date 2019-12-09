@@ -38,7 +38,7 @@ namespace final_project
             string command = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='lawyers';";
 
             dbcmd.CommandText = command;
-            
+
             try
             {
                 using (IDataReader reader = dbcmd.ExecuteReader())
@@ -58,7 +58,7 @@ namespace final_project
                 Console.WriteLine($"Database error: {ex.Message}");
             }
 
-            return true;
+            return false; // If exception, return false
         }
 
         public void CreateSeed()
@@ -85,39 +85,139 @@ namespace final_project
             }
             else
                 Console.WriteLine("Local database already has entries. Stopped seeding process.");
-            
+
         }
 
-
-
-
-
-        // ############# Employee Database Methods #############
-
-        private bool CredentialsAreValid(string username, string password)
+        public Employee Logon(string username, string password)
         {
-            // add logic here
-            return true;
-        }
+            string type = "";
 
-        // Receptionist, Lawyer, Amins >>> login
-        public Lawyer Login(string username, string password)
-        {
-            if (CredentialsAreValid(username, password))
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string query = $"SELECT * FROM credentials WHERE username = '{username}'";
+
+            dbcmd.CommandText = query;
+
+            try
             {
-                // add logic here
-                Console.WriteLine("Logging in...");
+                using (IDataReader reader = dbcmd.ExecuteReader())
+                {
+                    if (reader.Read() == false || reader.GetString(1) != password)
+                    {
+                        Console.WriteLine("Wrong credentials.");
+                        return null;
+                    }
+
+                    type = reader.GetString(2);
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
-            return new Lawyer();
+            switch (type)
+            {
+                case "lawyer":
+                    return GetLawyer(username);
+                case "admin":
+                    return GetAdmin(username);
+                case "receptionist":
+                    return GetReceptionist(username);
+                default:
+                    return null;
+            }
         }
 
-        // Receptionist >>> registers new client
-        public void SetClient(int id, string name, DateTime bday, string caseType, string street, string zip, string city)
+        public Lawyer GetLawyer(string username)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO clients('id', 'name', 'birthdate', 'case_type', 'street', 'zip', 'city') VALUES('{id}', '{name}', '{bday.Year}-{bday.Month}-{bday.Day}', '{caseType}', '{street}', '{zip}', '{city}')";
+            // Fetch the employee credential record from credentials table
+            string command = $"SELECT id, first_name, last_name, date_joined, birthdate, seniority, specialization FROM lawyers WHERE username = '{username}'";
+
+            dbcmd.CommandText = command;
+
+            try
+            {
+                using (IDataReader reader = dbcmd.ExecuteReader())
+                {
+                    reader.Read();
+
+                    Lawyer NewLawyer = new Lawyer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)), Convert.ToDateTime(reader.GetString(4)), reader.GetInt32(5), reader.GetInt32(6));
+                    return NewLawyer;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
+            }
+            return null; // Null if the database could not find the record.
+        }
+
+        public AdminStaff GetAdmin(string username)
+        {
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            // Fetch the employee credential record from credentials table
+            string command = $"SELECT id, first_name, last_name, date_joined, role FROM admins WHERE username = '{username}'";
+
+            dbcmd.CommandText = command;
+
+            try
+            {
+                using (IDataReader reader = dbcmd.ExecuteReader())
+                {
+                    reader.Read();
+
+                    AdminStaff NewAdmin = new AdminStaff(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)), reader.GetInt32(4));
+                    return NewAdmin;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
+            }
+            return null; // Null if the database could not find the record.
+        }
+
+        public Receptionist GetReceptionist(string username)
+        {
+
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            // Fetch the employee credential record from credentials table
+            string command = $"SELECT id, first_name, last_name, date_joined FROM receptionists WHERE username = '{username}'";
+
+            dbcmd.CommandText = command;
+
+            try
+            {
+                using (IDataReader reader = dbcmd.ExecuteReader())
+                {
+                    reader.Read();
+
+                    Receptionist NewRecep = new Receptionist(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)));
+                    return NewRecep;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
+            }
+            return null; // Null if the database could not find the record.
+        }
+
+        // Receptionist >>> registers new client
+        public void SetClient(string name, DateTime bday, string caseType, string street, string zip, string city)
+        {
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string command = $"INSERT INTO clients('name', 'birthdate', 'case_type', 'street', 'zip', 'city') VALUES('{name}', '{bday.Year}-{bday.Month}-{bday.Day}', '{caseType}', '{street}', '{zip}', '{city}')";
 
             dbcmd.CommandText = command;
 
@@ -145,13 +245,29 @@ namespace final_project
         }
 
         // Receptionist >>> adds a new appointment
-        public void SetAppointment()
+        public void SetAppointment(string clientName, string lawyerLastName, DateTime date, string meetingRoom)
         {
+            int clientId = GetIdFromTableByColumn("clients", clientName, "name");
+            int lawyerId = GetIdFromTableByColumn("lawyers", lawyerLastName, "last_name");
+
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string command = $"INSERT INTO appointments('client_id', 'lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.Year}-{date.Month}-{date.Day} {date.Hour}:{date.Minute}:{date.Second}','{meetingRoom}')";
+
+            dbcmd.CommandText = command;
+
+            try
+            {
+                dbcmd.ExecuteNonQuery();
+                Console.WriteLine("Appointment added to database.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
+            }
             // check whether a meeting room is already booked or not
             // check for lawyer specialization: two options. 1.) "GetLawyersBySpecialization()" only offer a list of lawyers WHERE specialization = '<specialization>' 2.) "LawyerIsOfType(enum specialzation)" enter name > search lawyer > check specialization > return bool
             // check whether lawyer is available
-
-            Console.WriteLine("Saving appointment to Database");
         }
 
         // Receptionist, Lawyer, AdminStaff >>> lists all appointments ...done
@@ -175,8 +291,6 @@ namespace final_project
 
                         consoleText.Add(appointmentPrompt);
 
-                        // for testing
-                        Console.WriteLine(appointmentPrompt);
                     }
                 } while (reader.NextResult());
 
@@ -197,7 +311,7 @@ namespace final_project
             IDbCommand dbcmd = Connection.CreateCommand();
 
             string query = $"SELECT name, date_time, meeting_room FROM appointments INNER JOIN clients ON clients.id = appointments.client_id WHERE strftime('%Y-%m-%d %H:%M:%S', date_time) BETWEEN {startOfDay} AND {endOfDay}";
-            
+
             dbcmd.CommandText = query;
 
             using (IDataReader reader = dbcmd.ExecuteReader())
@@ -210,8 +324,6 @@ namespace final_project
 
                         consoleText.Add(appointmentPrompt);
 
-                        // for testing
-                        Console.WriteLine(appointmentPrompt);
                     }
                 } while (reader.NextResult());
 
@@ -260,7 +372,7 @@ namespace final_project
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = "SELECT name, case_type, start_date, total_charges FROM cases INNER JOIN clients ON clients.id = case.client_id";
+            string query = "SELECT name, type, start_date, total_charges FROM cases INNER JOIN clients ON client_id = clients.id";
 
             dbcmd.CommandText = query;
 
@@ -270,12 +382,10 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        string casePrompt = $"name: {reader.GetString(0)}\ncase type: {reader.GetString(1)}\nstart date: {reader.GetString(2)}\ntotal charges: {reader.GetString(3)}";
+                        string casePrompt = $"name: {reader.GetString(0)}\ncase type: {reader.GetInt32(1)}\nstart date: {reader.GetString(2)}\ntotal charges: {reader.GetString(3)}";
 
                         consoleText.Add(casePrompt);
 
-                        // for testing
-                        Console.WriteLine(casePrompt);
                     }
                 } while (reader.NextResult());
 
@@ -286,13 +396,13 @@ namespace final_project
         }
 
         // returns a client statt void, aber Dorian hat die client class noch nicht erstellt
-        private int GetClientId(string clientName)
+        private int GetIdFromTableByColumn(string tableName, string columnName, string searchWord)
         {
-            int clientId = 0;
+            int id = 0;
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = $"SELECT id FROM clients WHERE name like '%{clientName}%'";
+            string query = $"SELECT id FROM {tableName} WHERE {columnName} like '%{searchWord}%'";
 
             dbcmd.CommandText = query;
 
@@ -300,26 +410,26 @@ namespace final_project
             {
                 while (reader.Read())
                 {
-                    clientId = reader.GetInt32(0);
+                    id = reader.GetInt32(0);
 
                     // for testing
-                    Console.WriteLine(clientId);
+                    Console.WriteLine(id);
                 }
 
                 reader.Close();
             }
 
-            return clientId;
+            return id;
         }
 
         // Lawyer >>> adds a new case
-        public void SetCase(int id,string clientName, string caseType, DateTime date, string totalCharges)
+        public void SetCase(int id, string clientName, string caseType, DateTime date, string totalCharges)
         {
-            int clientId = GetClientId(clientName);
+            int clientId = GetIdFromTableByColumn("clients", "name", clientName);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO cases('id', 'client_id', 'case_type', 'start_date', 'total_charges') VALUES('{id}', '{clientId}', '{caseType}', '{date.Year}-{date.Month}-{date.Day} {date.Hour}:{date.Minute}:{date.Second}','{totalCharges}')";
+            string command = $"INSERT INTO cases('id', 'client_id', 'type', 'start_date', 'total_charges') VALUES('{id}', '{clientId}', '{caseType}', '{date.Year}-{date.Month}-{date.Day} {date.Hour}:{date.Minute}:{date.Second}','{totalCharges}')";
 
             dbcmd.CommandText = command;
 

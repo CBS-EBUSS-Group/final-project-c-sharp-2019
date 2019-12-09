@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace final_project
 {
@@ -8,16 +8,35 @@ namespace final_project
     {
         public enum AdminFunction { Accounting, HumanResources, OfficeManagement }
         public AdminFunction Role { get; set; }
+   
 
         public AdminStaff(int Id, string FirstName, string LastName, DateTime JoinedOn, int role = 1) : base(Id, FirstName, LastName, JoinedOn)
         {
             Role = (AdminFunction)role;
         }
 
-        public override string ToString()
+        public override void ListAllCases(DbManager db)
         {
-            return $"Administrative Staff's Employee Id: {Id}, \nFirst Name: {FirstName}, \nLast Name: {LastName}, \nJoined on: {JoinedOn}, \nAdministrative Role: {Role}.\n";
+            Console.WriteLine("You have chosen to list all cases.\n");
+            List<string> listOfCases = db.GetAllCases();
+
+            foreach (string entry in listOfCases)
+            {
+                Console.WriteLine(entry);
+            }
         }
+
+        public override void ListAllAppointments(DbManager db)
+        {
+            Console.WriteLine("You have chosen to list all appointments.\n");
+            List<string> listOfAppointments = db.GetAllAppointments();
+
+            foreach (string entry in listOfAppointments)
+            {
+                Console.WriteLine(entry);
+            }
+        }
+
 
     }
 }

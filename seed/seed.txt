@@ -1,32 +1,76 @@
 BEGIN TRANSACTION;
-CREATE TABLE lawyers (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, birthdate TEXT NOT NULL, seniority TEXT NOT NULL, specialization TEXT NOT NULL, date_joined TEXT NOT NULL);
-CREATE TABLE receptionists (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL);
-CREATE TABLE admins (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, role TEXT NOT NULL);
-CREATE TABLE appointments (id INTEGER PRIMARY KEY, client_id INTEGER NOT NULL, lawyer_id INTEGER NOT NULL, date_time TEXT NOT NULL, meeting_room TEXT NOT NULL);
-CREATE TABLE clients (id INTEGER PRIMARY KEY, name TEXT NOT NULL, birthdate TEXT NOT NULL, case_type TEXT NOT NULL, street TEXT NOT NULL, zip TEXT NOT NULL, city TEXT NOT NULL);
-CREATE TABLE cases (id INTEGER PRIMARY KEY, client_id INTEGER NOT NULL, case_type TEXT NOT NULL, start_date TEXT NOT NULL, total_charges TEXT NOT NULL);
-INSERT INTO receptionists ('id', 'first_name', 'last_name', 'date_joined')
-VALUES(2, 'James', 'Franco', '2000-01-01');
-INSERT INTO lawyers ('id', 'first_name', 'last_name', 'birthdate', 'seniority', 'specialization', 'date_joined')
+CREATE TABLE credentials (username TEXT PRIMARY KEY, password TEXT NOT NULL, type TEXT NOT NULL);
+CREATE TABLE lawyers (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, birthdate TEXT NOT NULL, seniority INTEGER NOT NULL, specialization INTEGER NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE receptionists (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE admins (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, role INT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE appointments (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, lawyer_id INTEGER NOT NULL, date_time TEXT NOT NULL, meeting_room TEXT NOT NULL);
+CREATE TABLE clients (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, birthdate TEXT NOT NULL, case_type INTEGER NOT NULL, street TEXT NOT NULL, zip TEXT NOT NULL, city TEXT NOT NULL);
+CREATE TABLE cases (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, type INTEGER NOT NULL, start_date TEXT NOT NULL, total_charges TEXT NOT NULL);
+INSERT INTO credentials ('username', 'password', 'type')
 VALUES
-  (1, 'Dorian', 'Nguyen', '1995-03-24', 'senior', 'corporate', '2019-11-22'),
-  (2, 'Dominik', 'Gadesmann', '1994-11-26', 'senior', 'family', '2019-11-22'),
-  (3, 'Maxwell', 'Burda', '1996-03-07', 'senior', 'criminal', '2019-11-22'),
-  (4, 'Peter', 'Parker', '2000-01-01', 'junior', 'corporate', '2020-01-01'),
-  (5, 'John', 'Doe', '2000-01-02', 'junior', 'corporate', '2020-01-01'),
-  (6, 'Jane', 'Harris', '2000-01-03', 'junior', 'corporate', '2020-01-01'),
-  (7, 'Bruce', 'Wayne', '2000-01-04', 'junior', 'family', '2020-01-01'),
-  (8, 'James', 'Cordon', '2000-01-05', 'junior', 'family', '2020-01-01'),
-  (9, 'Keanu', 'Reeves', '2000-01-06', 'junior', 'family', '2020-01-01'),
-  (10, 'Michael', 'Phelps', '2000-01-07', 'junior', 'criminal', '2020-01-01'),
-  (11, 'Jordan', 'Belfort', '2000-01-08', 'junior', 'criminal', '2020-01-01'),
-  (12, 'Angelina', 'Jolie', '2000-01-09', 'junior', 'criminal', '2020-01-01');
-INSERT INTO clients ('id', 'name', 'birthdate', 'case_type', 'street', 'zip', 'city')
+  ('lawyer1', 'rootaccess', 'lawyer'),
+  ('lawyer2', 'rootaccess', 'lawyer'),
+  ('lawyer3', 'rootaccess', 'lawyer'),
+  ('lawyer4', 'rootaccess', 'lawyer'),
+  ('lawyer5', 'rootaccess', 'lawyer'),
+  ('lawyer6', 'rootaccess', 'lawyer'),
+  ('lawyer7', 'rootaccess', 'lawyer'),
+  ('lawyer8', 'rootaccess', 'lawyer'),
+  ('lawyer9', 'rootaccess', 'lawyer'),
+  ('lawyer10', 'rootaccess', 'lawyer'),
+  ('lawyer11', 'rootaccess', 'lawyer'),
+  ('lawyer12', 'rootaccess', 'lawyer'),
+  ('reception1', 'rootaccess', 'receptionist'),
+  ('admin1', 'rootaccess', 'admin'),
+  ('admin2', 'rootaccess', 'admin'),
+  ('admin3', 'rootaccess', 'admin');
+INSERT INTO admins ('first_name', 'last_name', 'date_joined', 'role', 'username')
 VALUES
-  (1, 'Harrison Ford', '1964-12-12', 'criminal', 'Hollywood Boulevard 66', '14643', 'Los Angeles'),
-  (2, 'Peter Gregory', '1962-06-06', 'corporate', 'Tamarind Drive 6', '23113', 'Palo Alto');
-INSERT INTO appointments ('id', 'client_id', 'lawyer_id', 'date_time', 'meeting_room')
+  ('Hubert', 'Mayer', '1905-04-05', 1, 'admin1'),
+  ('Peter', 'Lustig', '1950-02-05', 2, 'admin2'),
+  ('Luisa', 'Loewe', '1912-01-05', 3, 'admin3');
+INSERT INTO receptionists ('first_name', 'last_name', 'date_joined', 'username')
+VALUES('James', 'Franco', '2000-01-01', 'reception1');
+INSERT INTO lawyers ('first_name', 'last_name', 'date_joined', 'birthdate', 'seniority', 'specialization', 'username')
 VALUES
-  (1, 1, 3, '2019-12-05 12:30:00', 'Board Room'),
-  (2, 2, 1, '2019-12-16 09:30:00', 'Shark Room');
+  ('Dorian', 'Nguyen','2019-03-03', '1995-03-24', 2, 1, 'lawyer1'),
+  ('Dominik', 'Gadesmann','2019-11-22', '1994-11-26', 2, 2, 'lawyer2'),
+  ('Maxwell', 'Burda', '2019-11-22', '1996-03-07', 2, 3, 'lawyer3'),
+  ('Peter', 'Parker', '2020-01-01', '2000-01-01', 1, 1, 'lawyer4'),
+  ('John', 'Doe', '2020-01-01', '2000-01-02', 1, 1, 'lawyer5'),
+  ('Jane', 'Harris', '2020-01-01', '2000-01-03', 1, 1, 'lawyer6'),
+  ('Bruce', 'Wayne', '2020-01-01', '2000-01-04', 1, 2, 'lawyer7'),
+  ('James', 'Cordon', '2020-01-01', '2000-01-05', 1, 2, 'lawyer8'),
+  ('Keanu', 'Reeves', '2020-01-01', '2000-01-06', 1, 2, 'lawyer9'),
+  ('Michael', 'Phelps', '2020-02-01', '2000-01-07', 1, 3, 'lawyer10'),
+  ('Jordan', 'Belfort', '2020-02-01', '2000-01-08', 1, 3, 'lawyer11'),
+  ('Angelina', 'Jolie', '2020-03-01', '2000-01-09', 1, 3, 'lawyer12');
+INSERT INTO clients ('name', 'birthdate', 'case_type', 'street', 'zip', 'city')
+VALUES
+  ('Harrison Ford', '1964-12-12', 3, 'Hollywood Boulevard 66', '14643', 'Los Angeles'),
+  ('Peter Gregory', '1962-06-06', 2, 'Tamarind Drive 6', '23113', 'Palo Alto'),
+  ('Lord Voldemort', '1940-03-06', 3, 'Slytherin Street 934', '11111', 'Hogwarts'),
+  ('Harry Potter', '1995-05-06', 2, 'Gryffindor Street 123', '55555', 'Hogwarts'),
+  ('Hermine Granger', '1992-06-06', 2, 'Gryffindor Street 321', '55555', 'Hogwarts'),
+  ('Ron Wesley', '1998-03-03', 2, 'Gryffindor Street 22', '55555', 'Hogwarts'),
+  ('Severus Snape', '1920-01-02', 3, 'Slytherin Street 22', '11111', 'Hogwarts'),
+  ('Mark Zuckerberg', '1958-01-03', 1, 'Facebook Campus 1', '23113', 'Palo Alto'),
+  ('Bill Gates', '1948-03-07', 1, 'Microsoft Campus 1', '23113', 'Palo Alto'),
+  ('Tim Cook', '1998-02-03', 3, 'Apple Park 1', '23113', 'Palo Alto');
+INSERT INTO appointments ('client_id', 'lawyer_id', 'date_time', 'meeting_room')
+VALUES
+  (1, 3, '2019-12-05 12:30:00', 'Acquarium'),
+  (2, 1, '2019-12-16 09:30:00', 'Cube'),
+  (3, 5, '2019-12-12 14:30:00', 'Cube'),
+  (9, 2, '2019-12-14 15:30:00', 'Cave'),
+  (8, 4, '2019-12-10 17:30:00', 'Cave'),
+  (4, 6, '2019-12-02 16:30:00', 'Cave'),
+  (7, 3, '2019-12-05 12:30:00', 'Cave');
+INSERT INTO cases (client_id, type, start_date, total_charges)
+VALUES
+  (3, 2, '1998-03-03', 200000),
+  (1, 3, '2009-02-20', 40000),
+  (1, 3, '2001-01-10', 30000),
+  (1, 3, '2002-12-11', 10000),
+  (1, 3, '2004-09-04', 100000);
 COMMIT;
