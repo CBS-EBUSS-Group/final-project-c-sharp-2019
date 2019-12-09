@@ -88,7 +88,7 @@ namespace final_project
 
         }
 
-        public Employee Logon(string username, string password)
+        public Employee Login(string username, string password)
         {
             string type = "";
 
@@ -425,7 +425,9 @@ namespace final_project
         // Lawyer >>> adds a new case
         public void SetCase(int id, string clientName, string caseType, DateTime date, string totalCharges)
         {
-            int clientId = GetIdFromTableByColumn("clients", "name", clientName);
+            string lastName = clientName.Split()[1];
+
+            int clientId = GetIdFromTableByColumn("clients", "name", lastName);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 

@@ -25,7 +25,7 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to register a new case");
 
-            Console.WriteLine("Client Name?");
+            Console.WriteLine("Please type in the client's lastname");
             string clientName = Console.ReadLine();
             Console.WriteLine("Casetype:");
             string caseType = Console.ReadLine();
