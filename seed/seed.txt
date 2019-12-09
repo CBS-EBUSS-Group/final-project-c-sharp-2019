@@ -21,9 +21,9 @@ VALUES
   ('lawyer11', 'rootaccess', 'lawyer'),
   ('lawyer12', 'rootaccess', 'lawyer'),
   ('reception1', 'rootaccess', 'receptionist'),
-  ('admin1', 'rootaccess', 'adminstaff'),
-  ('admin2', 'rootaccess', 'adminstaff'),
-  ('admin3', 'rootaccess', 'adminstaff');
+  ('admin1', 'rootaccess', 'admin'),
+  ('admin2', 'rootaccess', 'admin'),
+  ('admin3', 'rootaccess', 'admin');
 INSERT INTO admins ('first_name', 'last_name', 'date_joined', 'role', 'username')
 VALUES
   ('Hubert', 'Mayer', '1905-04-05', 1, 'admin1'),
@@ -31,9 +31,9 @@ VALUES
   ('Luisa', 'Loewe', '1912-01-05', 3, 'admin3');
 INSERT INTO receptionists ('first_name', 'last_name', 'date_joined', 'username')
 VALUES('James', 'Franco', '2000-01-01', 'reception1');
-INSERT INTO lawyers ('first_name', 'last_name', 'birthdate', 'seniority', 'specialization', 'date_joined', 'username')
+INSERT INTO lawyers ('first_name', 'last_name', 'date_joined', 'birthdate', 'seniority', 'specialization', 'username')
 VALUES
-  ('Dorian', 'Nguyen','2019-03-03', '1995-03-03', 2, 1, 'lawyer1'),
+  ('Dorian', 'Nguyen','2019-03-03', '1995-03-24', 2, 1, 'lawyer1'),
   ('Dominik', 'Gadesmann','2019-11-22', '1994-11-26', 2, 2, 'lawyer2'),
   ('Maxwell', 'Burda', '2019-11-22', '1996-03-07', 2, 3, 'lawyer3'),
   ('Peter', 'Parker', '2020-01-01', '2000-01-01', 1, 1, 'lawyer4'),

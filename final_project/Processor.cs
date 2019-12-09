@@ -40,7 +40,7 @@ namespace final_project
             Console.WriteLine("password:");
             string password = Console.ReadLine();
 
-            user = db.Login(username, password);
+            user = db.Logon(username, password);
         }
 
         private void LawyerProgramFlow()
