@@ -3,21 +3,36 @@ namespace final_project
 {
     public class Case
     {
-        public enum CaseType { Corporate, Family, Criminal}
+        private enum CaseTypes { General, Corporate, Family, Criminal}
 
-        protected int Id { get; set; }
-        protected int ClientId { get; set; }
-        public CaseType TypeOfCase { get; set; }
-        protected DateTime StartDate { get; set; }
-        protected int TotalCharges { get; set; }
+        private int Id;
+        private int ClientId;
+        private string ClientName { get; set; }
+        private CaseTypes TypeOfCase { get; set; }
+        private DateTime StartDate { get; set; }
+        private string TotalCharges { get; set; }
 
-        public Case(int id, int clientId, int typeOfCase, DateTime startDate, int totalCharges)
+        public Case(string clientName, int caseType, DateTime startDate, string totalCharges)
         {
-            Id = id;
-            ClientId = clientId;
-            TypeOfCase = (CaseType)typeOfCase;
+            ClientName = clientName;
+            TypeOfCase = (CaseTypes)caseType;
             StartDate = startDate;
             TotalCharges = totalCharges;
+        }
+
+        public void SetId(int id)
+        {
+            Id = id;
+        }
+
+        public void SetClientId(int clientId)
+        {
+            ClientId = clientId;
+        }
+
+        public override string ToString()
+        {
+            return $"Client Name: {ClientName},\nCase type: {TypeOfCase},\nStartdate: {StartDate.ToShortDateString()},\nTotal charges: {TotalCharges}\n";
         }
     }
 }

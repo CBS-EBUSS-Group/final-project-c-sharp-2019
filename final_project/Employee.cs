@@ -61,5 +61,17 @@ namespace final_project
         {
             Console.WriteLine("User does not have access to this function.");
         }
+
+        // maybe later
+        public virtual void ListMyCases(DbManager db)
+        {
+            Console.WriteLine("User does not have access to this function.");
+        }
+
+        // maybe later
+        public virtual void ListMyAppointments(DbManager db)
+        {
+            Console.WriteLine("User does not have access to this function.");
+        }
     }
 }

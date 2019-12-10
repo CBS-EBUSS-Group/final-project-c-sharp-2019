@@ -18,25 +18,28 @@ namespace final_project
         public override void ListAllCases(DbManager db)
         {
             Console.WriteLine("You have chosen to list all cases.\n");
-            List<string> listOfCases = db.GetAllCases();
+            List<Case> caseList = db.GetAllCases();
 
-            foreach (string entry in listOfCases)
+            foreach (Case @case in caseList)
             {
-                Console.WriteLine(entry);
+                Console.WriteLine(@case.ToString());
             }
+            Console.WriteLine();
         }
 
         public override void ListAllAppointments(DbManager db)
         {
             Console.WriteLine("You have chosen to list all appointments.\n");
-            List<string> listOfAppointments = db.GetAllAppointments();
+            
+            List<Appointment> appointmentList = db.GetAllAppointments();
 
-            foreach (string entry in listOfAppointments)
+            foreach (Appointment appointment in appointmentList)
             {
-                Console.WriteLine(entry);
+                Console.WriteLine(appointment.ToString());
             }
-        }
+            Console.WriteLine();
 
+        }
 
     }
 }

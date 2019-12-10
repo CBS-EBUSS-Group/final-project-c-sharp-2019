@@ -1,11 +1,11 @@
 BEGIN TRANSACTION;
 CREATE TABLE credentials (username TEXT PRIMARY KEY, password TEXT NOT NULL, type TEXT NOT NULL);
-CREATE TABLE lawyers (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, birthdate TEXT NOT NULL, seniority INTEGER NOT NULL, specialization INTEGER NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
-CREATE TABLE receptionists (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
-CREATE TABLE admins (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, role INT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
-CREATE TABLE appointments (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, lawyer_id INTEGER NOT NULL, date_time TEXT NOT NULL, meeting_room TEXT NOT NULL);
-CREATE TABLE clients (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, birthdate TEXT NOT NULL, case_type INTEGER NOT NULL, street TEXT NOT NULL, zip TEXT NOT NULL, city TEXT NOT NULL);
-CREATE TABLE cases (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER NOT NULL, type INTEGER NOT NULL, start_date TEXT NOT NULL, total_charges TEXT NOT NULL);
+CREATE TABLE lawyers (lawyer_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, birthdate TEXT NOT NULL, seniority INTEGER NOT NULL, specialization INTEGER NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE receptionists (receptionist_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE admins (admin_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_joined TEXT NOT NULL, role INT NOT NULL, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES credentials(username));
+CREATE TABLE appointments (appointment_id INTEGER PRIMARY KEY AUTOINCREMENT, a_client_id INTEGER NOT NULL, a_lawyer_id INTEGER NOT NULL, date_time TEXT NOT NULL, meeting_room INTEGER NOT NULL);
+CREATE TABLE clients (client_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, birthdate TEXT NOT NULL, case_type INTEGER NOT NULL, street TEXT NOT NULL, zip TEXT NOT NULL, city TEXT NOT NULL);
+CREATE TABLE cases (case_id INTEGER PRIMARY KEY AUTOINCREMENT, c_client_id INTEGER NOT NULL, type INTEGER NOT NULL, start_date TEXT NOT NULL, total_charges TEXT NOT NULL);
 INSERT INTO credentials ('username', 'password', 'type')
 VALUES
   ('lawyer1', 'rootaccess', 'lawyer'),
@@ -57,20 +57,20 @@ VALUES
   ('Mark Zuckerberg', '1958-01-03', 1, 'Facebook Campus 1', '23113', 'Palo Alto'),
   ('Bill Gates', '1948-03-07', 1, 'Microsoft Campus 1', '23113', 'Palo Alto'),
   ('Tim Cook', '1998-02-03', 3, 'Apple Park 1', '23113', 'Palo Alto');
-INSERT INTO appointments ('client_id', 'lawyer_id', 'date_time', 'meeting_room')
+INSERT INTO appointments ('a_client_id', 'a_lawyer_id', 'date_time', 'meeting_room')
 VALUES
-  (1, 3, '2019-12-05 12:30:00', 'Acquarium'),
-  (2, 1, '2019-12-16 09:30:00', 'Cube'),
-  (3, 5, '2019-12-12 14:30:00', 'Cube'),
-  (9, 2, '2019-12-14 15:30:00', 'Cave'),
-  (8, 4, '2019-12-10 17:30:00', 'Cave'),
-  (4, 6, '2019-12-02 16:30:00', 'Cave'),
-  (7, 3, '2019-12-05 12:30:00', 'Cave');
-INSERT INTO cases (client_id, type, start_date, total_charges)
+  (1, 3, '2019-12-05 12:30:00', 1),
+  (2, 1, '2019-12-16 09:30:00', 2),
+  (3, 5, '2019-12-12 14:30:00', 2),
+  (9, 2, '2019-12-14 15:30:00', 3),
+  (8, 4, '2019-12-10 17:30:00', 3),
+  (4, 6, '2019-12-02 16:30:00', 3),
+  (7, 3, '2019-12-05 12:30:00', 3);
+INSERT INTO cases (c_client_id, type, start_date, total_charges)
 VALUES
-  (3, 2, '1998-03-03', 200000),
-  (1, 3, '2009-02-20', 40000),
-  (1, 3, '2001-01-10', 30000),
-  (1, 3, '2002-12-11', 10000),
-  (1, 3, '2004-09-04', 100000);
+  (3, 2, '1998-03-03', '200000'),
+  (1, 3, '2009-02-20', '40000'),
+  (1, 3, '2001-01-10', '30000'),
+  (1, 3, '2002-12-11', '10000'),
+  (1, 3, '2004-09-04', '100000');
 COMMIT;
