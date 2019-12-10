@@ -45,8 +45,8 @@ namespace final_project
             }
             int lawyerId = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter date and time of the appointment in a valid format yyyy-MM-dd hh:mm");
-            DateTime date = DateTime.ParseExact($"{Console.ReadLine()}:00", "yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture);
+            Console.WriteLine("Enter date and time of the appointment in a valid format yyyy-MM-dd HH:mm");
+            DateTime date = DateTime.ParseExact($"{Console.ReadLine()}:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
             Console.WriteLine("Type in a number to choose a Meetingroom:\n1.Aquarium\n2.Cube\n3.Cave");
             int meetingRoom = int.Parse(Console.ReadLine());

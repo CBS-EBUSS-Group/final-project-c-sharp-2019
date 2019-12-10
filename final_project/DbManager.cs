@@ -233,26 +233,38 @@ namespace final_project
             }
         }
 
-        private bool RoomIsBooked()
-        {
-            // add logic here
-            return false;
-        }
-
-        private bool LawyerIsAvailable()
-        {
-            // add logic here
-            return true;
-        }
-
         // Receptionist >>> adds a new appointment >>> DONE
         public void SetAppointment(string clientName, int lawyerId, DateTime date, int meetingRoom)
         {
+            List<Appointment> appointmentList = GetAllAppointments();
+            bool isRoomAvailable = true;
+            bool isLawyerAvailable = true;
+
+            foreach (Appointment appointment in appointmentList)
+            {
+                if (!appointment.RoomIsAvailable(meetingRoom, date))
+                    isRoomAvailable = false;
+                if (!appointment.LawyerIsAvailabile(lawyerId, date))
+                    isLawyerAvailable = false;
+            }
+
+            if (!isLawyerAvailable)
+            {
+                Console.WriteLine("Lawyer is unavailable at that time! Please choose another lawyer or a different time!");
+                return;
+            }
+
+            if (!isRoomAvailable)
+            {
+                Console.WriteLine("Room is unavailable at that time! Please try another room!");
+                return;
+            }
+
             int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO appointments('a_client_id', 'a_lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.ToString("yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture)}', {meetingRoom})";
+            string command = $"INSERT INTO appointments('a_client_id', 'a_lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)}', {meetingRoom})";
 
 
             dbcmd.CommandText = command;
@@ -266,9 +278,6 @@ namespace final_project
             {
                 Console.WriteLine($"A database error occurred: {ex.Message}");
             }
-            // check whether a meeting room is already booked or not
-            // check for lawyer specialization: two options. 1.) "GetLawyersBySpecialization()" only offer a list of lawyers WHERE specialization = '<specialization>' 2.) "LawyerIsOfType(enum specialzation)" enter name > search lawyer > check specialization > return bool
-            // check whether lawyer is available
         }
 
         public List<Lawyer> GetLawyersByClientCaseType(string clientName)
@@ -368,7 +377,7 @@ namespace final_project
         }
 
         // Lawyer >>> lists personal appointments >>> DONE
-        public List<Appointment> GetMyAppointments(int id)
+        public List<Appointment> GetAppointmentsByLawyerId(int id)
         {
             List<Appointment> appointmentList = new List<Appointment>();
 

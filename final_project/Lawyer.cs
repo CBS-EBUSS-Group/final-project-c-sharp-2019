@@ -13,8 +13,8 @@ namespace final_project
         public Rank Seniority { get; set; }
         public Field Specialization { get; set; }
 
-        // Design decision: Constructor sets a standard value of Junior Rank for Seniority and Undeclared for Specialization, if no value given
-        public Lawyer(int Id, string FirstName, string LastName, DateTime JoinedOn, DateTime dateOfBirth, int seniority = 1, int specialization = 1) : base(Id, FirstName, LastName, JoinedOn)
+        // Design decision: Constructor sets a standard value of Junior Rank for Seniority and General for Specialization, if no value given
+        public Lawyer(int Id, string FirstName, string LastName, DateTime JoinedOn, DateTime dateOfBirth, int seniority = 0, int specialization = 0) : base(Id, FirstName, LastName, JoinedOn)
         {
             DateOfBirth = dateOfBirth;
             Seniority = (Rank)seniority;
@@ -28,8 +28,7 @@ namespace final_project
             Console.WriteLine("Please type in the client's name");
             string clientName = Console.ReadLine();
 
-            Console.WriteLine("Casetype:\n1.Corporate\n2.Family\n3.Criminal\nType in a number.");
-            int caseType = int.Parse(Console.ReadLine());
+            int caseType = (int)Specialization;
 
             Console.WriteLine("Date yyyy-MM-dd:");
             DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -47,7 +46,7 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to list your appointments.\n");
 
-            List<Appointment> appointmentList = db.GetMyAppointments(Id);
+            List<Appointment> appointmentList = db.GetAppointmentsByLawyerId(Id);
 
             foreach (Appointment appointment in appointmentList)
             {
