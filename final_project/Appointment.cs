@@ -11,16 +11,16 @@ namespace final_project
         private int LawyerId;
         private string ClientName { get; set; }
         private string LawyerName { get; set; }
-        private DateTime DateTime { get; set; }
+        private DateTime Date { get; set; }
         private RoomNames MeetingRoom { get; set; }
         
 
 
-        public Appointment(string clientName, string lawyerName, DateTime dateTime, int meetingRoom)
+        public Appointment(string clientName, string lawyerName, DateTime date, int meetingRoom)
         {
             ClientName = clientName;
             LawyerName = lawyerName;
-            DateTime = dateTime;
+            Date = date;
             MeetingRoom = (RoomNames)meetingRoom;
         }
 
@@ -39,9 +39,23 @@ namespace final_project
             LawyerId = lawyerId;
         }
 
+        public bool RoomIsAvailable(int room, DateTime date)
+        {
+            if (room == (int)MeetingRoom && ((date > Date && date < Date.AddHours(1)) || (date.AddHours(1) > Date && date.AddHours(1) < Date.AddHours(1))))
+                return false;
+            else return true;
+        }
+
+        public bool LawyerIsAvailabile(int lawyerId, DateTime date)
+        {
+            if (lawyerId == LawyerId && ((date > Date && date < Date.AddHours(1)) || (date.AddHours(1) > Date && date.AddHours(1) < Date.AddHours(1))))
+                return false;
+            else return true;
+        }
+
         public override string ToString()
         {
-            return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {DateTime.ToLocalTime().ToString("U")}\nMeetingRoom: {MeetingRoom}\n";
+            return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {Date.ToLocalTime().ToString("U")}\nMeetingRoom: {MeetingRoom}\n";
         }
     }
 }
