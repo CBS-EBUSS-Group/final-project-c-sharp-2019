@@ -18,9 +18,7 @@ namespace final_project
         {
             Console.WriteLine("Welcome to the LegalX CRM System!");
 
-            //LoginProcess();
-
-            user = new Receptionist();
+            LoginProcess();
 
             if (user is Lawyer)
                     LawyerProgramFlow();
@@ -28,8 +26,6 @@ namespace final_project
                     AdminProgramFlow();
                 else if (user is Receptionist)
                     ReceptionistProgramFlow();
-
-            //Console.ReadLine(); // Testing
         }
 
         private void LoginProcess()
@@ -58,7 +54,7 @@ namespace final_project
             do
             {
                 user.Greeting();
-                Console.WriteLine("1) Add new case\n2) List all cases\n3) List all appointments\n4) Exit program");
+                Console.WriteLine("1) Add new case\n2) List my cases\n3) List my appointments\n4) Log out\n5) Exit program");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -70,23 +66,30 @@ namespace final_project
                         break;
 
                     case "2":
-                        user.ListAllCases(db);
+                        user.ListMyCases(db);
                         condition++;
                         LawyerProgramFlow();
                         break;
 
                     case "3":
-                        user.ListAllAppointments(db);
+                        user.ListMyAppointments(db);
                         condition++;
                         LawyerProgramFlow();
                         break;
+
                     case "4":
+                        user = null;
+                        Console.WriteLine("You have successfully logged off.\n");
+                        LoginProcess();
+                        break;
+
+                    case "5":
                         db.Disconnect();
                         Environment.Exit(0);
                         break;
 
                     default:
-                        Console.WriteLine("Please choose 1, 2 or 3.");
+                        Console.WriteLine("Please choose 1, 2, 3, 4 or 5.");
                         break;
                 }
             } while (condition < 1);
@@ -99,7 +102,7 @@ namespace final_project
             do
             {
                 user.Greeting();
-                Console.WriteLine("1) List all cases\n2) List all appointments\n3) Exit program");
+                Console.WriteLine("1) List all cases\n2) List all appointments\n3) Log out\n4) Exit program");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -117,12 +120,18 @@ namespace final_project
                         break;
 
                     case "3":
+                        user = null;
+                        Console.WriteLine("You have successfully logged off.\n");
+                        LoginProcess();
+                        break;
+
+                    case "4":
                         db.Disconnect();
                         Environment.Exit(0);
                         break;
 
                     default:
-                        Console.WriteLine("Please choose 1 or 2");
+                        Console.WriteLine("Please choose 1, 2, 3 or 4");
                         break;
                 }
             } while (condition < 1);
@@ -136,7 +145,7 @@ namespace final_project
             do
             {
                 user.Greeting();
-                Console.WriteLine("1) Register a new client\n2) Add new appointment\n3) List all appointments\n4) List all appointments of a specific date\n5) List all clients\n6) Exit program");
+                Console.WriteLine("1) Register a new client\n2) Add new appointment\n3) List all appointments\n4) List all appointments of a specific date\n5) List all clients\n6) Log out\n7) Exit program");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -171,12 +180,18 @@ namespace final_project
                         break;
 
                     case "6":
+                        user = null;
+                        Console.WriteLine("You have successfully logged off.\n");
+                        LoginProcess();
+                        break;
+
+                    case "7":
                         db.Disconnect();
                         Environment.Exit(0);
                         break;
 
                     default:
-                        Console.WriteLine("Please choose 1, 2, 3, 4 or 5.");
+                        Console.WriteLine("Please choose 1, 2, 3, 4, 5, 6 or 7.");
                         break;
                 }
             } while (condition < 1);

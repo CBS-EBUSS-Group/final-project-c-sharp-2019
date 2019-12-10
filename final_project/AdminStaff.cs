@@ -8,7 +8,6 @@ namespace final_project
     {
         public enum AdminFunction { Accounting, HumanResources, OfficeManagement }
         public AdminFunction Role { get; set; }
-   
 
         public AdminStaff(int Id, string FirstName, string LastName, DateTime JoinedOn, int role = 1) : base(Id, FirstName, LastName, JoinedOn)
         {

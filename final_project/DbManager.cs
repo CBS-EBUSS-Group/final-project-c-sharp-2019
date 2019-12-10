@@ -132,7 +132,7 @@ namespace final_project
             }
         }
 
-        public Lawyer GetLawyer(string username)
+        private Lawyer GetLawyer(string username)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
 
@@ -158,7 +158,7 @@ namespace final_project
             return null; // Null if the database could not find the record.
         }
 
-        public AdminStaff GetAdmin(string username)
+        private AdminStaff GetAdmin(string username)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
 
@@ -185,7 +185,7 @@ namespace final_project
             return null; // Null if the database could not find the record.
         }
 
-        public Receptionist GetReceptionist(string username)
+        private Receptionist GetReceptionist(string username)
         {
 
             IDbCommand dbcmd = Connection.CreateCommand();
@@ -212,15 +212,6 @@ namespace final_project
             }
             return null; // Null if the database could not find the record.
         }
-
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 
         // Receptionist >>> registers new client >>> DONE
         public void SetClient(string name, DateTime bday, int caseType, string street, string zip, string city)
@@ -255,10 +246,9 @@ namespace final_project
         }
 
         // Receptionist >>> adds a new appointment >>> DONE
-        public void SetAppointment(string clientName, string lawyerName, DateTime date, int meetingRoom)
+        public void SetAppointment(string clientName, int lawyerId, DateTime date, int meetingRoom)
         {
             int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
-            int lawyerId = GetFieldFromTableByColumn("lawyer_id", "lawyers", "last_name", lawyerName.Split()[1]);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
@@ -279,6 +269,35 @@ namespace final_project
             // check whether a meeting room is already booked or not
             // check for lawyer specialization: two options. 1.) "GetLawyersBySpecialization()" only offer a list of lawyers WHERE specialization = '<specialization>' 2.) "LawyerIsOfType(enum specialzation)" enter name > search lawyer > check specialization > return bool
             // check whether lawyer is available
+        }
+
+        public List<Lawyer> GetLawyersByClientCaseType(string clientName)
+        {
+            List<Lawyer> lawyerList = new List<Lawyer>();
+            int clientCaseType = GetFieldFromTableByColumn("case_type", "clients", "name", clientName);
+
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string command = $"SELECT lawyer_id, first_name, last_name, date_joined, birthdate, seniority, specialization FROM lawyers WHERE specialization = {clientCaseType}";
+
+            dbcmd.CommandText = command;
+
+            using (IDataReader reader = dbcmd.ExecuteReader())
+            {
+                do
+                {
+                    while (reader.Read())
+                    {
+                        Lawyer lawyer = new Lawyer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)), Convert.ToDateTime(reader.GetString(4)), reader.GetInt32(5), reader.GetInt32(6));
+
+                        lawyerList.Add(lawyer);
+                    }
+                } while (reader.NextResult());
+
+                reader.Close();
+            }
+
+            return lawyerList;
         }
 
         // Receptionist, Lawyer, AdminStaff >>> lists all appointments >>> DONE
@@ -348,7 +367,39 @@ namespace final_project
             return appointmentList;
         }
 
-        // Receptionist >>> lists all clients >>> DONE except enum
+        // Lawyer >>> lists personal appointments >>> DONE
+        public List<Appointment> GetMyAppointments(int id)
+        {
+            List<Appointment> appointmentList = new List<Appointment>();
+
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, appointment_id, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.client_id = appointments.a_client_id INNER JOIN lawyers ON lawyers.lawyer_id = appointments.a_lawyer_id WHERE a_lawyer_id = {id}";
+
+            dbcmd.CommandText = query;
+
+            using (IDataReader reader = dbcmd.ExecuteReader())
+            {
+                do
+                {
+                    while (reader.Read())
+                    {
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetInt32(4));
+                        appointment.SetId(reader.GetInt32(5));
+                        appointment.SetLawyerId(reader.GetInt32(6));
+                        appointment.SetClientId(reader.GetInt32(7));
+
+                        appointmentList.Add(appointment);
+                    }
+                } while (reader.NextResult());
+
+                reader.Close();
+            }
+
+            return appointmentList;
+        }
+
+        // Receptionist >>> lists all clients >>> DONE
         public List<Client> GetAllClients()
         {
             List<Client> clientList = new List<Client>();
@@ -378,7 +429,7 @@ namespace final_project
             return clientList;
         }
 
-        // Lawyer, AdminStaff >>> lists all cases >> DONE except enum
+        // Lawyer, AdminStaff >>> lists all cases >> DONE
 
         public List<Case> GetAllCases()
         {
@@ -411,6 +462,39 @@ namespace final_project
             return caseList;
         }
 
+        // Lawyer >>> lists personal cases >>> DONE
+        public List<Case> GetMyCases(int id)
+        {
+            List<Case> caseList = new List<Case>();
+
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string query = $"SELECT name, type, start_date, total_charges, case_id, client_id FROM cases INNER JOIN clients ON c_client_id = clients.client_id WHERE c_lawyer_id = {id}";
+
+            dbcmd.CommandText = query;
+
+            using (IDataReader reader = dbcmd.ExecuteReader())
+            {
+                do
+                {
+                    while (reader.Read())
+                    {
+                        Case @case = new Case(reader.GetString(0), reader.GetInt32(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetString(3));
+                        @case.SetId(reader.GetInt32(4));
+                        @case.SetClientId(reader.GetInt32(5));
+
+                        caseList.Add(@case);
+
+                    }
+                } while (reader.NextResult());
+
+                reader.Close();
+            }
+
+            return caseList;
+        }
+
+        // queries the id by name to insert as a reference key
         private int GetFieldFromTableByColumn(string fieldName , string tableName, string columnName, string searchWord)
         {
             int id = 0;
@@ -444,13 +528,13 @@ namespace final_project
         }
 
         // Lawyer >>> adds a new case >>> DONE
-        public void SetCase(string clientName, int caseType, DateTime date, string totalCharges)
+        public void SetCase(int lawyerId, string clientName, int caseType, DateTime date, string totalCharges)
         {
             int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO cases('c_client_id', 'type', 'start_date', 'total_charges') VALUES('{clientId}', {caseType}, '{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}','{totalCharges}')";
+            string command = $"INSERT INTO cases('c_lawyer_id', 'c_client_id', 'type', 'start_date', 'total_charges') VALUES('{lawyerId}', '{clientId}', {caseType}, '{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}','{totalCharges}')";
 
             dbcmd.CommandText = command;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace final_project
+﻿namespace final_project
 {
     class MainClass
     {
