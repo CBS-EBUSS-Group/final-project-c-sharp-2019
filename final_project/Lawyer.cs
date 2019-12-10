@@ -13,8 +13,6 @@ namespace final_project
         public Rank Seniority { get; set; }
         public Field Specialization { get; set; }
 
-        public Lawyer() { } // for testing remove later
-
         // Design decision: Constructor sets a standard value of Junior Rank for Seniority and Undeclared for Specialization, if no value given
         public Lawyer(int Id, string FirstName, string LastName, DateTime JoinedOn, DateTime dateOfBirth, int seniority = 1, int specialization = 1) : base(Id, FirstName, LastName, JoinedOn)
         {
@@ -39,17 +37,17 @@ namespace final_project
             Console.WriteLine("Total Charges:");
             string totalCharges = Console.ReadLine();
 
-            db.SetCase(clientName, caseType, date, totalCharges);
+            db.SetCase(Id, clientName, caseType, date, totalCharges);
 
             Console.WriteLine("You have successfully added a new case!");
 
         }
 
-        public override void ListAllAppointments(DbManager db)
+        public override void ListMyAppointments(DbManager db)
         {
-            Console.WriteLine("You have chosen to list all appointments.\n");
+            Console.WriteLine("You have chosen to list your appointments.\n");
 
-            List<Appointment> appointmentList = db.GetAllAppointments();
+            List<Appointment> appointmentList = db.GetMyAppointments(Id);
 
             foreach (Appointment appointment in appointmentList)
             {
@@ -59,10 +57,10 @@ namespace final_project
 
         }
 
-        public override void ListAllCases(DbManager db)
+        public override void ListMyCases(DbManager db)
         {
-            Console.WriteLine("You have chosen to list all cases.\n");
-            List<Case> caseList = db.GetAllCases();
+            Console.WriteLine("You have chosen to list your cases.\n");
+            List<Case> caseList = db.GetMyCases(Id);
 
             foreach (Case @case in caseList)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace final_project
 {
     public class Appointment
@@ -40,7 +41,6 @@ namespace final_project
 
         public override string ToString()
         {
-            //return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {DateTime.ToString("U")}\nMeetingRoom: {MeetingRoom}\n";
             return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {DateTime.ToLocalTime().ToString("U")}\nMeetingRoom: {MeetingRoom}\n";
         }
     }

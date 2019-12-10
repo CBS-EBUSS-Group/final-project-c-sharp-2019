@@ -10,8 +10,6 @@ namespace final_project
         protected string LastName { get; set; }
         protected DateTime JoinedOn { get; set; }
 
-        public Employee() { } // remove later: for testing
-
         public Employee(int id, string firstName, string lastName, DateTime joinedOn)
         {
             Id = id;
@@ -22,7 +20,12 @@ namespace final_project
 
         public virtual void Greeting() // Virtual method to greet users logging in. Allows access to private property FirstName. Is defined as virtual, in order to allow polymorphism with child classes.
         {
-            Console.WriteLine($"Welcome {FirstName}, what do you want to do today?");
+            Console.WriteLine($"\nWelcome {FirstName}, what do you want to do today?");
+        }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}\nName: {FirstName} {LastName}\nJoined on: {JoinedOn.ToShortDateString()}";
         }
 
         public virtual void AddNewClient(DbManager db)
@@ -62,13 +65,11 @@ namespace final_project
             Console.WriteLine("User does not have access to this function.");
         }
 
-        // maybe later
         public virtual void ListMyCases(DbManager db)
         {
             Console.WriteLine("User does not have access to this function.");
         }
 
-        // maybe later
         public virtual void ListMyAppointments(DbManager db)
         {
             Console.WriteLine("User does not have access to this function.");
