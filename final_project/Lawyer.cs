@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Globalization;
 
 namespace final_project
 {
     public class Lawyer : Employee
     {
         public enum Rank { Junior, Senior }
-        public enum Field { Corporate, FamilyCase, CriminalCase }
+        public enum Field { General, Corporate, Family, Criminal }
 
         private readonly DateTime DateOfBirth;
         public Rank Seniority { get; set; }
@@ -27,33 +27,37 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to register a new case");
 
-            Console.WriteLine("Please type in the client's lastname");
+            Console.WriteLine("Please type in the client's name");
             string clientName = Console.ReadLine();
-            Console.WriteLine("Casetype:");
+
+            Console.WriteLine("Casetype:\n1.Corporate\n2.Family\n3.Criminal\nType in a number.");
             string caseType = Console.ReadLine();
+
             Console.WriteLine("Date yyyy-MM-dd:");
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", null);
+            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
             Console.WriteLine("Total Charges:");
             string totalCharges = Console.ReadLine();
 
-            db.SetCase(Id, clientName, caseType, date, totalCharges);
+            db.SetCase(clientName, caseType, date, totalCharges);
 
             Console.WriteLine("You have successfully added a new case!");
 
         }
 
-        //public override void ListAllAppointments(DbManager db)
-        //{
-        //    Console.WriteLine("You have chosen to list all appointments.\n");
-        //    List<Appointment> listOfAppointments = db.GetAllAppointments();
+        public override void ListAllAppointments(DbManager db)
+        {
+            Console.WriteLine("You have chosen to list all appointments.\n");
 
-        //    foreach (string entry in listOfAppointments)
-        //    {
-        //        Console.WriteLine(entry);
-        //    }
-        //    Console.WriteLine();
-        //}
+            List<Appointment> appointmentList = db.GetAllAppointments();
 
+            foreach (Appointment appointment in appointmentList)
+            {
+                Console.WriteLine(appointment.ToString());
+            }
+            Console.WriteLine();
+
+        }
 
         public override void ListAllCases(DbManager db)
         {

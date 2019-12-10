@@ -223,11 +223,11 @@ namespace final_project
 
 
         // Receptionist >>> registers new client >>> DONE
-        public void SetClient(string name, DateTime bday, string caseType, string street, string zip, string city)
+        public void SetClient(string name, DateTime bday, int caseType, string street, string zip, string city)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO clients('name', 'birthdate', 'case_type', 'street', 'zip', 'city') VALUES('{name}', '{bday.Year}-{bday.Month}-{bday.Day}', '{caseType}', '{street}', '{zip}', '{city}')";
+            string command = $"INSERT INTO clients('name', 'birthdate', 'case_type', 'street', 'zip', 'city') VALUES('{name}', '{bday.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}', '{caseType}', '{street}', '{zip}', '{city}')";
 
             dbcmd.CommandText = command;
 
@@ -379,36 +379,6 @@ namespace final_project
         }
 
         // Lawyer, AdminStaff >>> lists all cases >> DONE except enum
-        /*
-        public List<string> GetAllCases()
-        {
-            List<string> consoleText = new List<string>();
-
-            IDbCommand dbcmd = Connection.CreateCommand();
-
-            string query = "SELECT name, type, start_date, total_charges FROM cases INNER JOIN clients ON c_client_id = clients.client_id";
-
-            dbcmd.CommandText = query;
-
-            using (IDataReader reader = dbcmd.ExecuteReader())
-            {
-                do
-                {
-                    while (reader.Read())
-                    {
-                        string casePrompt = $"name: {reader.GetString(0)}\ncase type: {reader.GetInt32(1)}\nstart date: {reader.GetString(2)}\ntotal charges: {reader.GetString(3)}";
-
-                        consoleText.Add(casePrompt);
-
-                    }
-                } while (reader.NextResult());
-
-                reader.Close();
-            }
-
-            return consoleText;
-        }
-        */
 
         public List<Case> GetAllCases()
         {
@@ -473,16 +443,14 @@ namespace final_project
             return id;
         }
 
-        // Lawyer >>> adds a new case
-        public void SetCase(int id, string clientName, string caseType, DateTime date, string totalCharges)
+        // Lawyer >>> adds a new case >>> DONE
+        public void SetCase(string clientName, string caseType, DateTime date, string totalCharges)
         {
-            string lastName = clientName.Split()[1];
-
-            int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", lastName);
+            int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO cases('id', 'client_id', 'type', 'start_date', 'total_charges') VALUES('{id}', '{clientId}', '{caseType}', '{date.Year}-{date.Month}-{date.ToString("dd")} {date.Hour}:{date.Minute}:{date.Second}','{totalCharges}')";
+            string command = $"INSERT INTO cases('c_client_id', 'type', 'start_date', 'total_charges') VALUES('{clientId}', '{caseType}', '{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}','{totalCharges}')";
 
             dbcmd.CommandText = command;
 

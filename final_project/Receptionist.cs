@@ -13,12 +13,12 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to add a new client.");
 
-            Console.WriteLine("Client Name?");
+            Console.WriteLine("Client name?");
             string name = Console.ReadLine();
             Console.WriteLine("Date of birth yyyy-MM-dd:");
             DateTime bday = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", null);
-            Console.WriteLine("Casetype:");
-            string caseType = Console.ReadLine();
+            Console.WriteLine("Case type:\n1.Corporate\n2.Family\n3.Criminal\nType in a number.");
+            int caseType = int.Parse(Console.ReadLine());
             Console.WriteLine("Street:");
             string street = Console.ReadLine();
             Console.WriteLine("ZIP");
@@ -39,7 +39,7 @@ namespace final_project
             string clientName = Console.ReadLine();
             Console.WriteLine("Lawyer Name:");
             string lawyerLastName = Console.ReadLine();
-            Console.WriteLine("Give a valid date and time yyyy-MM-dd hh:mm");
+            Console.WriteLine("Enter date and time of the appointment in a valid format yyyy-MM-dd hh:mm");
 
             DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
 
