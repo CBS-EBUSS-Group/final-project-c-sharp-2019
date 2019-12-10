@@ -38,7 +38,7 @@ namespace final_project
 
         public override string ToString()
         {
-            return $"ID: {Id}, Client name: {ClientName}, Lawyer name: {LawyerName}, Datetime {DateTime.ToLongTimeString()}, MeetingRoom: {MeetingRoom}";
+            return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {DateTime.ToString("U")}\nMeetingRoom: {MeetingRoom}\n";
         }
     }
 }

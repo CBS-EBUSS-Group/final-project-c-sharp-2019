@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Data;
 using Mono.Data.Sqlite;
+using System.Globalization;
 
 namespace final_project
 {
@@ -136,7 +137,7 @@ namespace final_project
             IDbCommand dbcmd = Connection.CreateCommand();
 
             // Fetch the employee credential record from credentials table
-            string command = $"SELECT id, first_name, last_name, date_joined, birthdate, seniority, specialization FROM lawyers WHERE username = '{username}'";
+            string command = $"SELECT lawyer_id, first_name, last_name, date_joined, birthdate, seniority, specialization FROM lawyers WHERE username = '{username}'";
 
             dbcmd.CommandText = command;
 
@@ -162,7 +163,7 @@ namespace final_project
             IDbCommand dbcmd = Connection.CreateCommand();
 
             // Fetch the employee credential record from credentials table
-            string command = $"SELECT id, first_name, last_name, date_joined, role FROM admins WHERE username = '{username}'";
+            string command = $"SELECT admin_id, first_name, last_name, date_joined, role FROM admins WHERE username = '{username}'";
 
             dbcmd.CommandText = command;
 
@@ -190,7 +191,7 @@ namespace final_project
             IDbCommand dbcmd = Connection.CreateCommand();
 
             // Fetch the employee credential record from credentials table
-            string command = $"SELECT id, first_name, last_name, date_joined FROM receptionists WHERE username = '{username}'";
+            string command = $"SELECT receptionist_id, first_name, last_name, date_joined FROM receptionists WHERE username = '{username}'";
 
             dbcmd.CommandText = command;
 
@@ -261,7 +262,30 @@ namespace final_project
             int lawyerId = GetIdFromTableByColumn("lawyers", lawyerName.Split()[1], "last_name");
 
             IDbCommand dbcmd = Connection.CreateCommand();
+            // >>>>>>
+            /*
+            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.id = appointments.client_id";
 
+            dbcmd.CommandText = query;
+
+            using (IDataReader reader = dbcmd.ExecuteReader())
+            {
+                do
+                {
+                    while (reader.Read())
+                    {
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetInt32(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
+                        appointment.SetLawyerId(reader.GetInt32(5));
+                        appointment.SetClientId(reader.GetInt32(6));
+
+                        appointmentList.Add(appointment);
+                    }
+                } while (reader.NextResult());
+
+                reader.Close();
+            }
+            */
+            // >>>>>>
             string command = $"INSERT INTO appointments('client_id', 'lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.Year}-{date.Month}-{date.Day} {date.Hour}:{date.Minute}:{date.Second}','{meetingRoom}')";
 
             dbcmd.CommandText = command;
@@ -287,7 +311,7 @@ namespace final_project
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.id = appointments.client_id";
+            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, appointment_id, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.client_id = appointments.a_client_id INNER JOIN lawyers ON lawyers.lawyer_id = appointments.a_lawyer_id";
 
             dbcmd.CommandText = query;
 
@@ -297,9 +321,10 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetInt32(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
-                        appointment.SetLawyerId(reader.GetInt32(5));
-                        appointment.SetClientId(reader.GetInt32(6));
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
+                        appointment.SetId(reader.GetInt32(5));
+                        appointment.SetLawyerId(reader.GetInt32(6));
+                        appointment.SetClientId(reader.GetInt32(7));
 
                         appointmentList.Add(appointment);
                     }
@@ -316,12 +341,12 @@ namespace final_project
         {
             List<Appointment> appointmentList = new List<Appointment>();
 
-            string startOfDay = $"'{day.Year}-{day.Month}-{day.Day} 00:00:00'";
-            string endOfDay = $"'{day.Year}-{day.Month}-{day.Day} 23:59:59'";
+            string startOfDay = $"'{day.Year}-{day.Month}-{day.ToString("dd")} 00:00:00'";
+            string endOfDay = $"'{day.Year}-{day.Month}-{day.ToString("dd")} 23:59:59'";
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.id = appointments.client_id WHERE strftime('%Y-%m-%d %H:%M:%S', date_time) BETWEEN {startOfDay} AND {endOfDay}";
+            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, appointment_id, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.client_id = appointments.a_client_id INNER JOIN lawyers ON lawyers.lawyer_id = appointments.a_lawyer_id WHERE strftime('%Y-%m-%d %H:%M:%S', date_time) BETWEEN {startOfDay} AND {endOfDay}";
 
             dbcmd.CommandText = query;
 
@@ -331,9 +356,10 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetInt32(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
-                        appointment.SetLawyerId(reader.GetInt32(5));
-                        appointment.SetClientId(reader.GetInt32(6));
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetString(4));
+                        appointment.SetId(reader.GetInt32(5));
+                        appointment.SetLawyerId(reader.GetInt32(6));
+                        appointment.SetClientId(reader.GetInt32(7));
 
                         appointmentList.Add(appointment);
                     }
@@ -412,7 +438,6 @@ namespace final_project
             // code
         }
 
-        // returns a client statt void, aber Dorian hat die client class noch nicht erstellt
         private int GetIdFromTableByColumn(string tableName, string columnName, string searchWord)
         {
             int id = 0;

@@ -40,17 +40,17 @@ namespace final_project
 
         }
 
-        public override void ListAllAppointments(DbManager db)
-        {
-            Console.WriteLine("You have chosen to list all appointments.\n");
-            List<string> listOfAppointments = db.GetAllAppointments();
+        //public override void ListAllAppointments(DbManager db)
+        //{
+        //    Console.WriteLine("You have chosen to list all appointments.\n");
+        //    List<Appointment> listOfAppointments = db.GetAllAppointments();
 
-            foreach (string entry in listOfAppointments)
-            {
-                Console.WriteLine(entry);
-            }
-            Console.WriteLine();
-        }
+        //    foreach (string entry in listOfAppointments)
+        //    {
+        //        Console.WriteLine(entry);
+        //    }
+        //    Console.WriteLine();
+        //}
 
 
         public override void ListAllCases(DbManager db)

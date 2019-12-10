@@ -18,7 +18,9 @@ namespace final_project
         {
             Console.WriteLine("Welcome to the LegalX CRM System!");
 
-            LoginProcess();
+            //LoginProcess();
+
+            user = new Receptionist();
 
                 if (user is Lawyer)
                     LawyerProgramFlow();

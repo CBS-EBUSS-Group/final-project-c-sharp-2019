@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace final_project
 {
     public class Receptionist : Employee
     {
-
+        public Receptionist() { } // remove later for testing
         public Receptionist(int Id, string FirstName, string LastName, DateTime JoinedOn) : base(Id, FirstName, LastName, JoinedOn) {}
 
         public override void AddNewClient(DbManager db)
@@ -51,11 +52,11 @@ namespace final_project
         public override void ListAllAppointments(DbManager db)
         {
             Console.WriteLine("You have chosen to list all appointments.\n");
-            List<string> listOfAppointments = db.GetAllAppointments();
+            List<Appointment> listOfAppointments = db.GetAllAppointments();
 
-            foreach (string entry in listOfAppointments)
+            foreach (Appointment appointment in listOfAppointments)
             {
-                Console.WriteLine(entry);
+                Console.WriteLine(appointment.ToString());
             }
             Console.WriteLine();
         }
@@ -64,12 +65,15 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to list all appointsments of a specific date.\n");
             Console.WriteLine("Date yyyy-MM-dd:");
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", null);
-            List<string> listOfDailies = db.GetDailyAppointments(date);
+            int[] dateArr = Array.ConvertAll(Console.ReadLine().Split('-'), int.Parse);
 
-            foreach (string entry in listOfDailies)
+            DateTime date = new DateTime(dateArr[0], dateArr[1], dateArr[2]);
+
+            List<Appointment> listOfDailies = db.GetDailyAppointments(date);
+
+            foreach (Appointment appointment in listOfDailies)
             {
-                Console.WriteLine(entry);
+                Console.WriteLine(appointment.ToString());
             }
             Console.WriteLine();
         }
