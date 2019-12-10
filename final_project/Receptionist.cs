@@ -41,10 +41,10 @@ namespace final_project
             string lawyerLastName = Console.ReadLine();
             Console.WriteLine("Enter date and time of the appointment in a valid format yyyy-MM-dd hh:mm");
 
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
+            DateTime date = DateTime.ParseExact($"{Console.ReadLine()}:00", "yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture);
 
-            Console.WriteLine("Meetingroom");
-            string meetingRoom = Console.ReadLine();
+            Console.WriteLine("Type in a number to choose a Meetingroom:\n1.Aquarium\n2.Cube\n3.Cave");
+            int meetingRoom = int.Parse(Console.ReadLine());
 
             db.SetAppointment(clientName, lawyerLastName, date, meetingRoom);
         }
@@ -66,11 +66,7 @@ namespace final_project
             Console.WriteLine("You have chosen to list all appointsments of a specific date.\n");
             Console.WriteLine("Date yyyy-MM-dd:");
             DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            /*
-            int[] dateArr = Array.ConvertAll(Console.ReadLine().Split('-'), int.Parse);
 
-            DateTime date = new DateTime(dateArr[0], dateArr[1], dateArr[2]);
-            */
             List<Appointment> listOfDailies = db.GetDailyAppointments(date);
 
             foreach (Appointment appointment in listOfDailies)

@@ -3,22 +3,24 @@ namespace final_project
 {
     public class Appointment
     {
+        private enum RoomNames { Undefined, Aquarium, Cube, Cave }
+
         private int Id;
         private int ClientId;
         private int LawyerId;
         private string ClientName { get; set; }
         private string LawyerName { get; set; }
         private DateTime DateTime { get; set; }
-        private string MeetingRoom { get; set; }
+        private RoomNames MeetingRoom { get; set; }
         
 
 
-        public Appointment(string clientName, string lawyerName, DateTime dateTime, string meetingRoom)
+        public Appointment(string clientName, string lawyerName, DateTime dateTime, int meetingRoom)
         {
             ClientName = clientName;
             LawyerName = lawyerName;
             DateTime = dateTime;
-            MeetingRoom = meetingRoom;
+            MeetingRoom = (RoomNames)meetingRoom;
         }
 
         public void SetId(int id)

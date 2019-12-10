@@ -255,14 +255,14 @@ namespace final_project
         }
 
         // Receptionist >>> adds a new appointment >>> DONE
-        public void SetAppointment(string clientName, string lawyerName, DateTime date, string meetingRoom)
+        public void SetAppointment(string clientName, string lawyerName, DateTime date, int meetingRoom)
         {
             int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
             int lawyerId = GetFieldFromTableByColumn("lawyer_id", "lawyers", "last_name", lawyerName.Split()[1]);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO appointments('a_client_id', 'a_lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.ToString("yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture)}', '{meetingRoom}')";
+            string command = $"INSERT INTO appointments('a_client_id', 'a_lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.ToString("yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture)}', {meetingRoom})";
 
 
             dbcmd.CommandText = command;
@@ -298,7 +298,7 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetString(4));
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetInt32(4));
                         appointment.SetId(reader.GetInt32(5));
                         appointment.SetLawyerId(reader.GetInt32(6));
                         appointment.SetClientId(reader.GetInt32(7));
@@ -333,7 +333,7 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).AddHours(1), reader.GetString(4));
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).AddHours(1), reader.GetInt32(4));
                         appointment.SetId(reader.GetInt32(5));
                         appointment.SetLawyerId(reader.GetInt32(6));
                         appointment.SetClientId(reader.GetInt32(7));
@@ -444,13 +444,13 @@ namespace final_project
         }
 
         // Lawyer >>> adds a new case >>> DONE
-        public void SetCase(string clientName, string caseType, DateTime date, string totalCharges)
+        public void SetCase(string clientName, int caseType, DateTime date, string totalCharges)
         {
             int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO cases('c_client_id', 'type', 'start_date', 'total_charges') VALUES('{clientId}', '{caseType}', '{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}','{totalCharges}')";
+            string command = $"INSERT INTO cases('c_client_id', 'type', 'start_date', 'total_charges') VALUES('{clientId}', {caseType}, '{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}','{totalCharges}')";
 
             dbcmd.CommandText = command;
 

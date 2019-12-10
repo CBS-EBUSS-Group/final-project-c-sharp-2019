@@ -31,7 +31,7 @@ namespace final_project
             string clientName = Console.ReadLine();
 
             Console.WriteLine("Casetype:\n1.Corporate\n2.Family\n3.Criminal\nType in a number.");
-            string caseType = Console.ReadLine();
+            int caseType = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Date yyyy-MM-dd:");
             DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
