@@ -37,16 +37,16 @@ namespace final_project
 
             Console.WriteLine("Client Name:");
             string clientName = Console.ReadLine();
-            Console.WriteLine("Lastname of lawyer:");
+            Console.WriteLine("Lawyer Name:");
             string lawyerLastName = Console.ReadLine();
-            Console.WriteLine("Date yyyy/MM/dd:");
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", null);
+            Console.WriteLine("Give a valid date and time yyyy-MM-dd hh:mm");
+
+            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd hh:mm", CultureInfo.InvariantCulture);
+
             Console.WriteLine("Meetingroom");
             string meetingRoom = Console.ReadLine();
 
             db.SetAppointment(clientName, lawyerLastName, date, meetingRoom);
-
-            Console.WriteLine("You have successfully added a new client!");
         }
 
         public override void ListAllAppointments(DbManager db)
@@ -65,10 +65,12 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to list all appointsments of a specific date.\n");
             Console.WriteLine("Date yyyy-MM-dd:");
+            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            /*
             int[] dateArr = Array.ConvertAll(Console.ReadLine().Split('-'), int.Parse);
 
             DateTime date = new DateTime(dateArr[0], dateArr[1], dateArr[2]);
-
+            */
             List<Appointment> listOfDailies = db.GetDailyAppointments(date);
 
             foreach (Appointment appointment in listOfDailies)
@@ -81,11 +83,11 @@ namespace final_project
         public override void ListAllClients(DbManager db)
         {
             Console.WriteLine("You have chosen to list all clients.\n");
-            List<string> listOfClients = db.GetAllClients();
+            List<Client> clientList = db.GetAllClients();
 
-            foreach (string entry in listOfClients)
+            foreach (Client client in clientList)
             {
-                Console.WriteLine(entry);
+                Console.WriteLine(client.ToString());
             }
             Console.WriteLine();
         }

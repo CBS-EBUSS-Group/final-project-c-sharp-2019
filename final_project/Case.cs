@@ -10,10 +10,10 @@ namespace final_project
         private string ClientName { get; set; }
         public CaseType TypeOfCase { get; set; }
         private DateTime StartDate { get; set; }
-        private int TotalCharges { get; set; }
+        private string TotalCharges { get; set; }
 
         //default casetype
-        public Case(string clientName, int caseType, DateTime startDate, int totalCharges)
+        public Case(string clientName, int caseType, DateTime startDate, string totalCharges)
         {
             ClientName = clientName;
             TypeOfCase = (CaseType)caseType;
@@ -33,7 +33,7 @@ namespace final_project
 
         public override string ToString()
         {
-            return $"Case ID: {Id},\nClient Name: {ClientName},\nCaseType: {TypeOfCase},\nStartdate: {StartDate},\nTotal charges: {TotalCharges}.";
+            return $"Client Name: {ClientName},\nCaseType: {TypeOfCase},\nStartdate: {StartDate.ToShortDateString()},\nTotal charges: {TotalCharges}\n";
         }
     }
 }

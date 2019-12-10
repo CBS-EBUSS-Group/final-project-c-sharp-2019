@@ -3,20 +3,21 @@ namespace final_project
 {
   public class Client
   {
+    public enum TypeOfCase { Corporate, Family, Criminal}
 
     private int Id;
     private string Name { get; set; }
     private readonly DateTime DOB;
-    private string CaseType { get; set; }
+    private TypeOfCase CaseType { get; set; }
     private string Street { get; set; }
-    private int Zip { get; set; }
+    private string Zip { get; set; }
     private string City { get; set; }
 
-    public Client(string name, DateTime dob, string caseType, string street, int zip, string city)
+    public Client(string name, DateTime dob, int caseType, string street, string zip, string city)
     {
       Name = name;
       DOB = dob;
-      CaseType = caseType;
+      CaseType = (TypeOfCase)caseType;
       Street = street;
       Zip = zip;
       City = city;
@@ -29,7 +30,7 @@ namespace final_project
 
     public override string ToString()
     {
-      return $"Name: {Name},\n Date of birth: {DOB},\nCasetype on: {CaseType},\nStreet: {Street},\nZIP: {Zip},\nCity: {City}.";
+      return $"Name: {Name},\nDate of birth: {DOB.ToShortDateString()},\nCasetype: {CaseType},\nStreet: {Street},\nZIP: {Zip},\nCity: {City}.";
     }
   }
 }

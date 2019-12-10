@@ -20,7 +20,7 @@ namespace final_project
 
             //LoginProcess();
 
-            user = new Receptionist();
+            user = new Lawyer();
 
                 if (user is Lawyer)
                     LawyerProgramFlow();

@@ -254,46 +254,23 @@ namespace final_project
             return true;
         }
 
-        // Receptionist >>> adds a new appointment
+        // Receptionist >>> adds a new appointment >>> DONE
         public void SetAppointment(string clientName, string lawyerName, DateTime date, string meetingRoom)
         {
-
-            int clientId = GetIdFromTableByColumn("clients", clientName, "name");
-            int lawyerId = GetIdFromTableByColumn("lawyers", lawyerName.Split()[1], "last_name");
+            int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
+            int lawyerId = GetFieldFromTableByColumn("lawyer_id", "lawyers", "last_name", lawyerName.Split()[1]);
 
             IDbCommand dbcmd = Connection.CreateCommand();
-            // >>>>>>
-            /*
-            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.id = appointments.client_id";
 
-            dbcmd.CommandText = query;
+            string command = $"INSERT INTO appointments('a_client_id', 'a_lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.ToString("yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture)}', '{meetingRoom}')";
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
-            {
-                do
-                {
-                    while (reader.Read())
-                    {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetInt32(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
-                        appointment.SetLawyerId(reader.GetInt32(5));
-                        appointment.SetClientId(reader.GetInt32(6));
-
-                        appointmentList.Add(appointment);
-                    }
-                } while (reader.NextResult());
-
-                reader.Close();
-            }
-            */
-            // >>>>>>
-            string command = $"INSERT INTO appointments('client_id', 'lawyer_id', 'date_time', 'meeting_room') VALUES('{clientId}', '{lawyerId}', '{date.Year}-{date.Month}-{date.Day} {date.Hour}:{date.Minute}:{date.Second}','{meetingRoom}')";
 
             dbcmd.CommandText = command;
 
             try
             {
                 dbcmd.ExecuteNonQuery();
-                Console.WriteLine("Appointment added to database.");
+                Console.WriteLine("\nAppointment successfully added to database.\n");
             }
             catch (Exception ex)
             {
@@ -321,7 +298,7 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture), reader.GetString(4));
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetString(4));
                         appointment.SetId(reader.GetInt32(5));
                         appointment.SetLawyerId(reader.GetInt32(6));
                         appointment.SetClientId(reader.GetInt32(7));
@@ -341,12 +318,12 @@ namespace final_project
         {
             List<Appointment> appointmentList = new List<Appointment>();
 
-            string startOfDay = $"'{day.Year}-{day.Month}-{day.ToString("dd")} 00:00:00'";
-            string endOfDay = $"'{day.Year}-{day.Month}-{day.ToString("dd")} 23:59:59'";
+            string startOfDay = day.ToString("yyyy-MM-dd HH:mm:ss");
+            string endOfDay = day.AddHours(23).AddMinutes(59).AddSeconds(59).ToString("yyyy-MM-dd HH:mm:ss");
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, appointment_id, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.client_id = appointments.a_client_id INNER JOIN lawyers ON lawyers.lawyer_id = appointments.a_lawyer_id WHERE strftime('%Y-%m-%d %H:%M:%S', date_time) BETWEEN {startOfDay} AND {endOfDay}";
+            string query = $"SELECT name, first_name, last_name, date_time, meeting_room, appointment_id, lawyer_id, client_id FROM appointments INNER JOIN clients ON clients.client_id = appointments.a_client_id INNER JOIN lawyers ON lawyers.lawyer_id = appointments.a_lawyer_id WHERE strftime('%Y-%m-%d %H:%M:%S', date_time) BETWEEN '{startOfDay}' AND '{endOfDay}'";
 
             dbcmd.CommandText = query;
 
@@ -356,7 +333,7 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetString(4));
+                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).AddHours(1), reader.GetString(4));
                         appointment.SetId(reader.GetInt32(5));
                         appointment.SetLawyerId(reader.GetInt32(6));
                         appointment.SetClientId(reader.GetInt32(7));
@@ -371,10 +348,10 @@ namespace final_project
             return appointmentList;
         }
 
-        // Receptionist >>> lists all clients ...done
-        public List<string> GetAllClients()
+        // Receptionist >>> lists all clients >>> DONE except enum
+        public List<Client> GetAllClients()
         {
-            List<string> consoleText = new List<string>();
+            List<Client> clientList = new List<Client>();
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
@@ -388,29 +365,28 @@ namespace final_project
                 {
                     while (reader.Read())
                     {
-                        string clientPrompt = $"name: {reader.GetString(1)}\nbirthdate: {reader.GetString(2)}\ncase type: {reader.GetString(3)}\nstreet: {reader.GetString(4)}\nzip: {reader.GetString(5)}\ncity: {reader.GetString(6)}";
+                        Client client = new Client(reader.GetString(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetInt32(3), reader.GetString(4), reader.GetString(5), reader.GetString(6));
+                        client.SetId(reader.GetInt32(0));
 
-                        consoleText.Add(clientPrompt);
-
-                        // for testing
-                        Console.WriteLine(clientPrompt);
+                        clientList.Add(client);
                     }
                 } while (reader.NextResult());
 
                 reader.Close();
             }
 
-            return consoleText;
+            return clientList;
         }
 
-        // Lawyer, AdminStaff >>> lists all cases
+        // Lawyer, AdminStaff >>> lists all cases >> DONE except enum
+        /*
         public List<string> GetAllCases()
         {
             List<string> consoleText = new List<string>();
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = "SELECT name, type, start_date, total_charges FROM cases INNER JOIN clients ON client_id = clients.id";
+            string query = "SELECT name, type, start_date, total_charges FROM cases INNER JOIN clients ON c_client_id = clients.client_id";
 
             dbcmd.CommandText = query;
 
@@ -432,33 +408,66 @@ namespace final_project
 
             return consoleText;
         }
+        */
 
-        public void GetAllCasesById()
+        public List<Case> GetAllCases()
         {
-            // code
-        }
-
-        private int GetIdFromTableByColumn(string tableName, string columnName, string searchWord)
-        {
-            int id = 0;
+            List<Case> caseList = new List<Case>();
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string query = $"SELECT id FROM {tableName} WHERE {columnName} like '%{searchWord}%'";
+            string query = "SELECT name, type, start_date, total_charges, case_id, client_id FROM cases INNER JOIN clients ON c_client_id = clients.client_id";
 
             dbcmd.CommandText = query;
 
             using (IDataReader reader = dbcmd.ExecuteReader())
             {
-                while (reader.Read())
+                do
                 {
-                    id = reader.GetInt32(0);
+                    while (reader.Read())
+                    {
+                        Case @case = new Case(reader.GetString(0), reader.GetInt32(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetString(3));
+                        @case.SetId(reader.GetInt32(4));
+                        @case.SetClientId(reader.GetInt32(5));
 
-                    // for testing
-                    Console.WriteLine(id);
-                }
+                        caseList.Add(@case);
+
+                    }
+                } while (reader.NextResult());
 
                 reader.Close();
+            }
+
+            return caseList;
+        }
+
+        private int GetFieldFromTableByColumn(string fieldName , string tableName, string columnName, string searchWord)
+        {
+            int id = 0;
+
+            IDbCommand dbcmd = Connection.CreateCommand();
+
+            string query = $"SELECT {fieldName} FROM {tableName} WHERE {columnName} like '%{searchWord}%'";
+
+            dbcmd.CommandText = query;
+
+            try
+            {
+                using (IDataReader reader = dbcmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        id = reader.GetInt32(0);
+                    }
+
+                    reader.Close();
+                }
+
+                return id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return id;
@@ -469,11 +478,11 @@ namespace final_project
         {
             string lastName = clientName.Split()[1];
 
-            int clientId = GetIdFromTableByColumn("clients", "name", lastName);
+            int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", lastName);
 
             IDbCommand dbcmd = Connection.CreateCommand();
 
-            string command = $"INSERT INTO cases('id', 'client_id', 'type', 'start_date', 'total_charges') VALUES('{id}', '{clientId}', '{caseType}', '{date.Year}-{date.Month}-{date.Day} {date.Hour}:{date.Minute}:{date.Second}','{totalCharges}')";
+            string command = $"INSERT INTO cases('id', 'client_id', 'type', 'start_date', 'total_charges') VALUES('{id}', '{clientId}', '{caseType}', '{date.Year}-{date.Month}-{date.ToString("dd")} {date.Hour}:{date.Minute}:{date.Second}','{totalCharges}')";
 
             dbcmd.CommandText = command;
 

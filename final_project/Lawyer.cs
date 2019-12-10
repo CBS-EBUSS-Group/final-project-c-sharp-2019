@@ -13,6 +13,8 @@ namespace final_project
         public Rank Seniority { get; set; }
         public Field Specialization { get; set; }
 
+        public Lawyer() { } // for testing remove later
+
         // Design decision: Constructor sets a standard value of Junior Rank for Seniority and Undeclared for Specialization, if no value given
         public Lawyer(int Id, string FirstName, string LastName, DateTime JoinedOn, DateTime dateOfBirth, int seniority = 1, int specialization = 1) : base(Id, FirstName, LastName, JoinedOn)
         {
@@ -56,14 +58,13 @@ namespace final_project
         public override void ListAllCases(DbManager db)
         {
             Console.WriteLine("You have chosen to list all cases.\n");
-            List<string> listOfCases = db.GetAllCases();
+            List<Case> caseList = db.GetAllCases();
 
-            foreach (string entry in listOfCases)
+            foreach (Case @case in caseList)
             {
-                Console.WriteLine(entry);
+                Console.WriteLine(@case.ToString());
             }
             Console.WriteLine();
         }
-
     }
 }
