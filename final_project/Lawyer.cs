@@ -21,6 +21,7 @@ namespace final_project
             Specialization = (Field)specialization;
         }
 
+        // takes user input and calls DbManager to create a new case in the database
         public override void AddNewCase(DbManager db)
         {
             Console.WriteLine("You have chosen to register a new case");
@@ -30,8 +31,13 @@ namespace final_project
 
             int caseType = (int)Specialization;
 
-            Console.WriteLine("Date yyyy-MM-dd:");
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            Console.WriteLine("Please enter a date in the format yyyy-MM-dd:");
+            DateTime date;
+
+            while (!DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            {
+                Console.WriteLine("You have entered a wrong date format. Please try again.");
+            }
 
             Console.WriteLine("Total Charges:");
             string totalCharges = Console.ReadLine();
@@ -42,6 +48,7 @@ namespace final_project
 
         }
 
+        // prints all appointments for the given lawyer id fetched from the database
         public override void ListMyAppointments(DbManager db)
         {
             Console.WriteLine("You have chosen to list your appointments.\n");
@@ -56,6 +63,7 @@ namespace final_project
 
         }
 
+        // prints all cases for the given lawyer id fetched from the database
         public override void ListMyCases(DbManager db)
         {
             Console.WriteLine("You have chosen to list your cases.\n");

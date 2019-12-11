@@ -7,6 +7,7 @@ namespace final_project
         private DbManager db;
         private Employee user;
 
+        // constructor instatiates the DbManager, calls database connection and seed creation
         public Processor()
         {
             db = new DbManager();
@@ -14,6 +15,7 @@ namespace final_project
             db.CreateSeed();
         }
 
+        // contains main program flow
         public void Process()
         {
             Console.WriteLine("Welcome to the LegalX CRM System!");
@@ -29,6 +31,7 @@ namespace final_project
 
         }
 
+        // sets the logged in employee as user property, if credentials are correct
         private void LoginProcess()
         {
             Console.WriteLine("Please login to your LegalX account with your username and password.");
@@ -50,7 +53,7 @@ namespace final_project
 
         private void LawyerProgramFlow()
         {
-            // print lawyer menu
+            // prints lawyer menu options
             int condition = 0;
             do
             {
@@ -98,7 +101,7 @@ namespace final_project
 
         private void AdminProgramFlow()
         {
-            // print admin menu
+            // prints admin menu options
             int condition = 0;
             do
             {
@@ -141,7 +144,7 @@ namespace final_project
 
         private void ReceptionistProgramFlow()
         {
-            // print receptionist menu
+            // prints receptionist menu options
             int condition = 0;
             do
             {

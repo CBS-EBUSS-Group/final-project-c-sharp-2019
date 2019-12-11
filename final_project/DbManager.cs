@@ -30,6 +30,7 @@ namespace final_project
             Console.WriteLine("Disconnected from Database.");
         }
 
+        // serves as a helper function to CreateSeed() to detect, if a database exists by querying for the lawyer table
         private bool DbExists()
         {
             bool dbExists = false;
@@ -62,6 +63,7 @@ namespace final_project
             return false; // If exception, return false
         }
 
+        // creates the seed database by reading in sqlite commands from the included seed.txt file in the repository (does not overwrite an existing database)
         public void CreateSeed()
         {
             Console.WriteLine("Creating database schema and seeding database...");
@@ -89,6 +91,8 @@ namespace final_project
 
         }
 
+        // validates the username and password input and checks the strings against the database table 'credentials'
+        // if credentials are correct, the 'type' field in the database links to the corresponding function to create a child object of the Employee class
         public Employee Login(string username, string password)
         {
             string type = "";
@@ -132,6 +136,7 @@ namespace final_project
             }
         }
 
+        // returns an instance of Lawyer for the login
         private Lawyer GetLawyer(string username)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
@@ -161,6 +166,7 @@ namespace final_project
             return null; // Null if the database could not find the record.
         }
 
+        // returns an instance of AdminStaff for the login
         private AdminStaff GetAdmin(string username)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
@@ -191,6 +197,7 @@ namespace final_project
             return null; // Null if the database could not find the record.
         }
 
+        // returns an instance of Receptionist for the login
         private Receptionist GetReceptionist(string username)
         {
 
@@ -222,7 +229,7 @@ namespace final_project
             return null; // Null if the database could not find the record.
         }
 
-        // Receptionist >>> registers new client >>> DONE
+        // Receptionist >>> registers new client
         public void SetClient(string name, DateTime bday, int caseType, string street, string zip, string city)
         {
             IDbCommand dbcmd = Connection.CreateCommand();
@@ -242,7 +249,7 @@ namespace final_project
             }
         }
 
-        // Receptionist >>> adds a new appointment >>> DONE
+        // Receptionist >>> adds a new appointment
         public void SetAppointment(string clientName, int lawyerId, DateTime date, int meetingRoom)
         {
             List<Appointment> appointmentList = GetAllAppointments();
@@ -289,6 +296,7 @@ namespace final_project
             }
         }
 
+        // Receptionist >>> returns correct lawyers for the case type of the given client for Receptionist.AddNewAppointment()
         public List<Lawyer> GetLawyersByClientCaseType(string clientName)
         {
             List<Lawyer> lawyerList = new List<Lawyer>();
@@ -325,7 +333,7 @@ namespace final_project
             return lawyerList;
         }
 
-        // Receptionist, Lawyer, AdminStaff >>> lists all appointments >>> DONE
+        // Receptionist, Lawyer, AdminStaff >>> lists all appointments
         public List<Appointment> GetAllAppointments()
         {
             List<Appointment> appointmentList = new List<Appointment>();
@@ -364,7 +372,7 @@ namespace final_project
             return appointmentList;
         }
 
-        // Receptionist >>> lists all appointments for a selected date >>> DONE
+        // Receptionist >>> lists all appointments for a selected date
         public List<Appointment> GetDailyAppointments(DateTime day)
         {
             List<Appointment> appointmentList = new List<Appointment>();
@@ -406,7 +414,7 @@ namespace final_project
             return appointmentList;
         }
 
-        // Lawyer >>> lists personal appointments >>> DONE
+        // Lawyer >>> lists personal appointments
         public List<Appointment> GetAppointmentsByLawyerId(int id)
         {
             List<Appointment> appointmentList = new List<Appointment>();
@@ -445,7 +453,7 @@ namespace final_project
             return appointmentList;
         }
 
-        // Receptionist >>> lists all clients >>> DONE
+        // Receptionist >>> lists all clients
         public List<Client> GetAllClients()
         {
             List<Client> clientList = new List<Client>();
@@ -482,8 +490,7 @@ namespace final_project
             return clientList;
         }
 
-        // Lawyer, AdminStaff >>> lists all cases >> DONE
-
+        // Lawyer, AdminStaff >>> lists all cases
         public List<Case> GetAllCases()
         {
             List<Case> caseList = new List<Case>();
@@ -522,7 +529,7 @@ namespace final_project
             return caseList;
         }
 
-        // Lawyer >>> lists personal cases >>> DONE
+        // Lawyer >>> lists personal cases
         public List<Case> GetMyCases(int id)
         {
             List<Case> caseList = new List<Case>();
@@ -561,7 +568,7 @@ namespace final_project
             return caseList;
         }
 
-        // queries the id by name to insert as a reference key
+        // queries the id (or another field of type INTEGER) by searchword in a given column and returns it
         private int GetFieldFromTableByColumn(string fieldName , string tableName, string columnName, string searchWord)
         {
             int id = 0;
@@ -593,7 +600,7 @@ namespace final_project
             return id;
         }
 
-        // Lawyer >>> adds a new case >>> DONE
+        // Lawyer >>> adds a new case
         public void SetCase(int lawyerId, string clientName, int caseType, DateTime date, string totalCharges)
         {
             int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);

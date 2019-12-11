@@ -14,6 +14,7 @@ namespace final_project
             Role = (AdminFunction)role;
         }
 
+        // prints all cases fetched from the database
         public override void ListAllCases(DbManager db)
         {
             Console.WriteLine("You have chosen to list all cases.\n");
@@ -26,6 +27,7 @@ namespace final_project
             Console.WriteLine();
         }
 
+        // prints all appointments fetched from the database
         public override void ListAllAppointments(DbManager db)
         {
             Console.WriteLine("You have chosen to list all appointments.\n");
