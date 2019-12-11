@@ -148,6 +148,9 @@ namespace final_project
                     reader.Read();
 
                     Lawyer NewLawyer = new Lawyer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)), Convert.ToDateTime(reader.GetString(4)), reader.GetInt32(5), reader.GetInt32(6));
+
+                    reader.Close();
+
                     return NewLawyer;
                 }
             }
@@ -174,6 +177,9 @@ namespace final_project
                     reader.Read();
 
                     AdminStaff NewAdmin = new AdminStaff(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)), reader.GetInt32(4));
+
+                    reader.Close();
+
                     return NewAdmin;
                 }
 
@@ -202,6 +208,9 @@ namespace final_project
                     reader.Read();
 
                     Receptionist NewRecep = new Receptionist(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)));
+
+                    reader.Close();
+
                     return NewRecep;
                 }
 
@@ -291,19 +300,26 @@ namespace final_project
 
             dbcmd.CommandText = command;
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
+            try
             {
-                do
+                using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    do
                     {
-                        Lawyer lawyer = new Lawyer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)), Convert.ToDateTime(reader.GetString(4)), reader.GetInt32(5), reader.GetInt32(6));
+                        while (reader.Read())
+                        {
+                            Lawyer lawyer = new Lawyer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), Convert.ToDateTime(reader.GetString(3)), Convert.ToDateTime(reader.GetString(4)), reader.GetInt32(5), reader.GetInt32(6));
 
-                        lawyerList.Add(lawyer);
-                    }
-                } while (reader.NextResult());
+                            lawyerList.Add(lawyer);
+                        }
+                    } while (reader.NextResult());
 
-                reader.Close();
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return lawyerList;
@@ -320,22 +336,29 @@ namespace final_project
 
             dbcmd.CommandText = query;
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
+            try
             {
-                do
+                using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    do
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetInt32(4));
-                        appointment.SetId(reader.GetInt32(5));
-                        appointment.SetLawyerId(reader.GetInt32(6));
-                        appointment.SetClientId(reader.GetInt32(7));
+                        while (reader.Read())
+                        {
+                            Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetInt32(4));
+                            appointment.SetId(reader.GetInt32(5));
+                            appointment.SetLawyerId(reader.GetInt32(6));
+                            appointment.SetClientId(reader.GetInt32(7));
 
-                        appointmentList.Add(appointment);
-                    }
-                } while (reader.NextResult());
+                            appointmentList.Add(appointment);
+                        }
+                    } while (reader.NextResult());
 
-                reader.Close();
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return appointmentList;
@@ -355,22 +378,29 @@ namespace final_project
 
             dbcmd.CommandText = query;
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
+            try
             {
-                do
+                using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    do
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).AddHours(1), reader.GetInt32(4));
-                        appointment.SetId(reader.GetInt32(5));
-                        appointment.SetLawyerId(reader.GetInt32(6));
-                        appointment.SetClientId(reader.GetInt32(7));
+                        while (reader.Read())
+                        {
+                            Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).AddHours(1), reader.GetInt32(4));
+                            appointment.SetId(reader.GetInt32(5));
+                            appointment.SetLawyerId(reader.GetInt32(6));
+                            appointment.SetClientId(reader.GetInt32(7));
 
-                        appointmentList.Add(appointment);
-                    }
-                } while (reader.NextResult());
+                            appointmentList.Add(appointment);
+                        }
+                    } while (reader.NextResult());
 
-                reader.Close();
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return appointmentList;
@@ -387,22 +417,29 @@ namespace final_project
 
             dbcmd.CommandText = query;
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
+            try
             {
-                do
+                using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    do
                     {
-                        Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetInt32(4));
-                        appointment.SetId(reader.GetInt32(5));
-                        appointment.SetLawyerId(reader.GetInt32(6));
-                        appointment.SetClientId(reader.GetInt32(7));
+                        while (reader.Read())
+                        {
+                            Appointment appointment = new Appointment(reader.GetString(0), $"{reader.GetString(1)} {reader.GetString(2)}", DateTime.ParseExact(reader.GetString(3), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), reader.GetInt32(4));
+                            appointment.SetId(reader.GetInt32(5));
+                            appointment.SetLawyerId(reader.GetInt32(6));
+                            appointment.SetClientId(reader.GetInt32(7));
 
-                        appointmentList.Add(appointment);
-                    }
-                } while (reader.NextResult());
+                            appointmentList.Add(appointment);
+                        }
+                    } while (reader.NextResult());
 
-                reader.Close();
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return appointmentList;
@@ -419,20 +456,27 @@ namespace final_project
 
             dbcmd.CommandText = query;
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
+            try
             {
-                do
+                using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    do
                     {
-                        Client client = new Client(reader.GetString(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetInt32(3), reader.GetString(4), reader.GetString(5), reader.GetString(6));
-                        client.SetId(reader.GetInt32(0));
+                        while (reader.Read())
+                        {
+                            Client client = new Client(reader.GetString(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetInt32(3), reader.GetString(4), reader.GetString(5), reader.GetString(6));
+                            client.SetId(reader.GetInt32(0));
 
-                        clientList.Add(client);
-                    }
-                } while (reader.NextResult());
+                            clientList.Add(client);
+                        }
+                    } while (reader.NextResult());
 
-                reader.Close();
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return clientList;
@@ -450,22 +494,29 @@ namespace final_project
 
             dbcmd.CommandText = query;
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
+            try
             {
-                do
+                using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    do
                     {
-                        Case @case = new Case(reader.GetString(0), reader.GetInt32(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetString(3));
-                        @case.SetId(reader.GetInt32(4));
-                        @case.SetClientId(reader.GetInt32(5));
+                        while (reader.Read())
+                        {
+                            Case @case = new Case(reader.GetString(0), reader.GetInt32(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetString(3));
+                            @case.SetId(reader.GetInt32(4));
+                            @case.SetClientId(reader.GetInt32(5));
 
-                        caseList.Add(@case);
+                            caseList.Add(@case);
 
-                    }
-                } while (reader.NextResult());
+                        }
+                    } while (reader.NextResult());
 
-                reader.Close();
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return caseList;
@@ -482,22 +533,29 @@ namespace final_project
 
             dbcmd.CommandText = query;
 
-            using (IDataReader reader = dbcmd.ExecuteReader())
+            try
             {
-                do
+                using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    do
                     {
-                        Case @case = new Case(reader.GetString(0), reader.GetInt32(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetString(3));
-                        @case.SetId(reader.GetInt32(4));
-                        @case.SetClientId(reader.GetInt32(5));
+                        while (reader.Read())
+                        {
+                            Case @case = new Case(reader.GetString(0), reader.GetInt32(1), DateTime.ParseExact(reader.GetString(2), "yyyy-MM-dd", CultureInfo.InvariantCulture), reader.GetString(3));
+                            @case.SetId(reader.GetInt32(4));
+                            @case.SetClientId(reader.GetInt32(5));
 
-                        caseList.Add(@case);
+                            caseList.Add(@case);
 
-                    }
-                } while (reader.NextResult());
+                        }
+                    } while (reader.NextResult());
 
-                reader.Close();
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A database error occurred: {ex.Message}");
             }
 
             return caseList;
@@ -518,10 +576,9 @@ namespace final_project
             {
                 using (IDataReader reader = dbcmd.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        id = reader.GetInt32(0);
-                    }
+                    reader.Read();
+
+                    id = reader.GetInt32(0);
 
                     reader.Close();
                 }

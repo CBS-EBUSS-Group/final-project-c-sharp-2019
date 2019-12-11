@@ -38,12 +38,19 @@ namespace final_project
             string clientName = Console.ReadLine();
 
             Console.WriteLine("Choose one of the available lawyers for this profession by entering the id:\n");
+            List<int> lawyerIds = new List<int>();
             foreach (Lawyer lawyer in db.GetLawyersByClientCaseType(clientName))
             {
+                lawyerIds.Add(lawyer.GetId());
                 Console.WriteLine(lawyer.ToString());
                 Console.WriteLine();
             }
-            int lawyerId = int.Parse(Console.ReadLine());
+            int lawyerId;
+
+            while (!lawyerIds.Contains(lawyerId = int.Parse(Console.ReadLine())))
+            {
+                Console.WriteLine("You have entered a wrong id. Please choose one of the provided ids.");
+            }
 
             Console.WriteLine("Enter date and time of the appointment in a valid format yyyy-MM-dd HH:mm");
             DateTime date = DateTime.ParseExact($"{Console.ReadLine()}:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
@@ -73,6 +80,12 @@ namespace final_project
             DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             List<Appointment> listOfDailies = db.GetDailyAppointments(date);
+
+            if (listOfDailies.Count == 0)
+            {
+                Console.WriteLine("No appointments found for the date you entered.");
+                return;
+            }
 
             foreach (Appointment appointment in listOfDailies)
             {

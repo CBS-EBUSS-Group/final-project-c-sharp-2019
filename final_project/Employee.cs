@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace final_project
 {
     public abstract class Employee
     {
-        protected int Id { get; set; } // make private
-        protected string FirstName { get; set; } // make private
-        protected string LastName { get; set; } // make private
-        protected DateTime JoinedOn { get; set; } // make private
+        protected int Id { get; set; }
+        protected string FirstName { get; set; }
+        protected string LastName { get; set; }
+        protected DateTime JoinedOn { get; set; }
 
         public Employee(int id, string firstName, string lastName, DateTime joinedOn)
         {

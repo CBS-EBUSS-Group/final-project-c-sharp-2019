@@ -67,5 +67,10 @@ namespace final_project
             }
             Console.WriteLine();
         }
+
+        public int GetId()
+        {
+            return Id;
+        }
     }
 }
