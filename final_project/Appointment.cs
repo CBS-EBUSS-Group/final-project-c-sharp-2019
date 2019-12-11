@@ -55,7 +55,7 @@ namespace final_project
 
         public override string ToString()
         {
-            return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {Date.ToLocalTime().ToString("U")}\nMeetingRoom: {MeetingRoom}\n";
+            return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {Date.ToLocalTime().ToString("U")}\nMeeting room: {MeetingRoom}\n";
         }
     }
 }
