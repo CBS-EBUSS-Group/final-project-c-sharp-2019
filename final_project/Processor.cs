@@ -20,12 +20,13 @@ namespace final_project
 
             LoginProcess();
 
-            if (user is Lawyer)
+                if (user is Lawyer)
                     LawyerProgramFlow();
                 else if (user is AdminStaff)
                     AdminProgramFlow();
                 else if (user is Receptionist)
                     ReceptionistProgramFlow();
+
         }
 
         private void LoginProcess()
@@ -80,7 +81,7 @@ namespace final_project
                     case "4":
                         user = null;
                         Console.WriteLine("You have successfully logged off.\n");
-                        LoginProcess();
+                        Process();
                         break;
 
                     case "5":
@@ -122,7 +123,7 @@ namespace final_project
                     case "3":
                         user = null;
                         Console.WriteLine("You have successfully logged off.\n");
-                        LoginProcess();
+                        Process();
                         break;
 
                     case "4":
@@ -182,7 +183,7 @@ namespace final_project
                     case "6":
                         user = null;
                         Console.WriteLine("You have successfully logged off.\n");
-                        LoginProcess();
+                        Process();
                         break;
 
                     case "7":
