@@ -26,12 +26,25 @@ namespace final_project
         {
             Console.WriteLine("\nYou have chosen to register a new case.");
 
-            Console.WriteLine("\nPlease type in the client's name");
-            string clientName = Console.ReadLine();
+            int clientId = 0;
+            int tryCount = 0;
+
+            while (clientId == 0)
+            {
+                if (tryCount > 0)
+                    Console.WriteLine("No such client found in database. Please try again.");
+
+                Console.WriteLine("\nPlease type in the client's name");
+                string clientName = Console.ReadLine();
+
+                clientId = db.GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
+
+                tryCount++;
+            }
 
             int caseType = (int)Specialization;
 
-            Console.WriteLine("Please enter a date in the format yyyy-MM-dd:");
+            Console.WriteLine("Please enter the case's start date in the format yyyy-MM-dd:");
             DateTime date;
 
             while (!DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
@@ -42,7 +55,7 @@ namespace final_project
             Console.WriteLine("Total Charges:");
             string totalCharges = Console.ReadLine();
 
-            db.SetCase(Id, clientName, caseType, date, totalCharges);
+            db.SetCase(Id, clientId, caseType, date, totalCharges);
 
             Console.WriteLine("\nYou have successfully added a new case!");
 

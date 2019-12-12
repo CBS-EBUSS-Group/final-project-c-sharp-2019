@@ -51,17 +51,29 @@ namespace final_project
         {
             Console.WriteLine("You have chosen to add a new appointment.");
 
-            Console.WriteLine("Client Name:");
-            string clientName = Console.ReadLine();
+            List<int> lawyerIds = new List<int>();
+            string clientName = "";
+            int tryCount = 0;
+
+            while (lawyerIds.Count == 0)
+            {
+                if (tryCount > 0)
+                    Console.WriteLine("No such client found in database. Please try again.");
+
+                Console.WriteLine("Enter client Name:");
+                clientName = Console.ReadLine();
+
+                foreach (Lawyer lawyer in db.GetLawyersByClientCaseType(clientName))
+                {
+                    lawyerIds.Add(lawyer.GetId());
+                    Console.WriteLine(lawyer.ToString());
+                    Console.WriteLine();
+                }
+
+                tryCount++;
+            }
 
             Console.WriteLine("Choose one of the available lawyers for this profession by entering the ID:\n");
-            List<int> lawyerIds = new List<int>();
-            foreach (Lawyer lawyer in db.GetLawyersByClientCaseType(clientName))
-            {
-                lawyerIds.Add(lawyer.GetId());
-                Console.WriteLine(lawyer.ToString());
-                Console.WriteLine();
-            }
             int lawyerId;
 
             while (!int.TryParse(Console.ReadLine(), out lawyerId) || !lawyerIds.Contains(lawyerId))
@@ -72,9 +84,9 @@ namespace final_project
             Console.WriteLine("Enter date and time of the appointment in a valid format yyyy-MM-dd HH:mm");
             DateTime date;
 
-            while (!DateTime.TryParseExact($"{Console.ReadLine()}:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            while (!DateTime.TryParseExact($"{Console.ReadLine()}:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out date) || date < DateTime.Now)
             {
-                Console.WriteLine("You have entered a wrong date format. Please try again.");
+                Console.WriteLine("You have entered a wrong date format or invalid date (in the past). Please try again.");
             }
 
             Console.WriteLine("Type in a number to choose a Meetingroom:\n1.Aquarium\n2.Cube\n3.Cave");

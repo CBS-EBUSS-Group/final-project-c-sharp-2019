@@ -569,7 +569,7 @@ namespace final_project
         }
 
         // queries the id (or another field of type INTEGER) by searchword in a given column and returns it
-        private int GetFieldFromTableByColumn(string fieldName , string tableName, string columnName, string searchWord)
+        public int GetFieldFromTableByColumn(string fieldName , string tableName, string columnName, string searchWord)
         {
             int id = 0;
 
@@ -601,10 +601,8 @@ namespace final_project
         }
 
         // Lawyer >>> adds a new case
-        public void SetCase(int lawyerId, string clientName, int caseType, DateTime date, string totalCharges)
+        public void SetCase(int lawyerId, int clientId, int caseType, DateTime date, string totalCharges)
         {
-            int clientId = GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
-
             IDbCommand dbcmd = Connection.CreateCommand();
 
             string command = $"INSERT INTO cases('c_lawyer_id', 'c_client_id', 'type', 'start_date', 'total_charges') VALUES('{lawyerId}', '{clientId}', {caseType}, '{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}','{totalCharges}')";
