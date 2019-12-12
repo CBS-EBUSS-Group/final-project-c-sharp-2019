@@ -614,7 +614,7 @@ namespace final_project
             try
             {
                 dbcmd.ExecuteNonQuery();
-                Console.WriteLine("Client added to database.");
+                Console.WriteLine("\nClient added to database.");
             }
             catch (Exception ex)
             {

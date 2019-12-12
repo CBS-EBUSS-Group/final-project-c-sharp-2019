@@ -18,7 +18,7 @@ namespace final_project
         // contains main program flow
         public void Process()
         {
-            Console.WriteLine("Welcome to the LegalX CRM System!");
+            Console.WriteLine("\nWelcome to the LegalX CRM System!");
 
             LoginProcess();
 
@@ -34,12 +34,12 @@ namespace final_project
         // sets the logged in employee as user property, if credentials are correct
         private void LoginProcess()
         {
-            Console.WriteLine("Please login to your LegalX account with your username and password.");
+            Console.WriteLine("\nPlease login to your LegalX account with your username and password.");
 
-            Console.WriteLine("username:");
+            Console.WriteLine("Username:");
             string username = Console.ReadLine();
 
-            Console.WriteLine("password:");
+            Console.WriteLine("\nPassword:");
             string password = Console.ReadLine();
 
             user = db.Login(username, password);
@@ -125,7 +125,7 @@ namespace final_project
 
                     case "3":
                         user = null;
-                        Console.WriteLine("You have successfully logged off.\n");
+                        Console.WriteLine("You have successfully logged off.");
                         Process();
                         break;
 

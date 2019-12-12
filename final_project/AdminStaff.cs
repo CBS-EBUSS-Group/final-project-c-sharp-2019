@@ -17,7 +17,7 @@ namespace final_project
         // prints all cases fetched from the database
         public override void ListAllCases(DbManager db)
         {
-            Console.WriteLine("You have chosen to list all cases.\n");
+            Console.WriteLine("\nYou have chosen to list all cases.\n");
             List<Case> caseList = db.GetAllCases();
 
             foreach (Case @case in caseList)
@@ -30,7 +30,7 @@ namespace final_project
         // prints all appointments fetched from the database
         public override void ListAllAppointments(DbManager db)
         {
-            Console.WriteLine("You have chosen to list all appointments.\n");
+            Console.WriteLine("\nYou have chosen to list all appointments.\n");
             
             List<Appointment> appointmentList = db.GetAllAppointments();
 

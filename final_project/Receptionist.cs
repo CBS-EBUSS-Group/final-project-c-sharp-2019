@@ -54,7 +54,7 @@ namespace final_project
             Console.WriteLine("Client Name:");
             string clientName = Console.ReadLine();
 
-            Console.WriteLine("Choose one of the available lawyers for this profession by entering the id:\n");
+            Console.WriteLine("Choose one of the available lawyers for this profession by entering the ID:\n");
             List<int> lawyerIds = new List<int>();
             foreach (Lawyer lawyer in db.GetLawyersByClientCaseType(clientName))
             {
@@ -66,7 +66,7 @@ namespace final_project
 
             while (!int.TryParse(Console.ReadLine(), out lawyerId) || !lawyerIds.Contains(lawyerId))
             {
-                Console.WriteLine("You have entered a wrong id. Please choose one of the provided ids.");
+                Console.WriteLine("You have entered a wrong ID. Please choose one of the provided IDs:");
             }
 
             Console.WriteLine("Enter date and time of the appointment in a valid format yyyy-MM-dd HH:mm");
@@ -117,7 +117,7 @@ namespace final_project
 
             if (listOfDailies.Count == 0)
             {
-                Console.WriteLine("No appointments found for the date you entered.");
+                Console.WriteLine("\nNo appointments found for the date you entered.");
                 return;
             }
 

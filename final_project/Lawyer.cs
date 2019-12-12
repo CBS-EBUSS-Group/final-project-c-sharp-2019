@@ -24,9 +24,9 @@ namespace final_project
         // takes user input and calls DbManager to create a new case in the database
         public override void AddNewCase(DbManager db)
         {
-            Console.WriteLine("You have chosen to register a new case");
+            Console.WriteLine("\nYou have chosen to register a new case.");
 
-            Console.WriteLine("Please type in the client's name");
+            Console.WriteLine("\nPlease type in the client's name");
             string clientName = Console.ReadLine();
 
             int caseType = (int)Specialization;
@@ -36,7 +36,7 @@ namespace final_project
 
             while (!DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
             {
-                Console.WriteLine("You have entered a wrong date format. Please try again.");
+                Console.WriteLine("\nYou have entered a wrong date format. Please try again.");
             }
 
             Console.WriteLine("Total Charges:");
@@ -44,7 +44,7 @@ namespace final_project
 
             db.SetCase(Id, clientName, caseType, date, totalCharges);
 
-            Console.WriteLine("You have successfully added a new case!");
+            Console.WriteLine("\nYou have successfully added a new case!");
 
         }
 
