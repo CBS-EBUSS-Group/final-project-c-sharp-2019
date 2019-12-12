@@ -39,6 +39,7 @@ namespace final_project
             LawyerId = lawyerId;
         }
 
+        // returns true, if the given room and time do not collide with this appointment; returns false on collision
         public bool RoomIsAvailable(int room, DateTime date)
         {
             if (room == (int)MeetingRoom && ((date > Date && date < Date.AddHours(1)) || (date.AddHours(1) > Date && date.AddHours(1) < Date.AddHours(1))))
@@ -46,6 +47,7 @@ namespace final_project
             else return true;
         }
 
+        // returns true if the given lawyer and time do not collide with this appointment; returns false on collision
         public bool LawyerIsAvailabile(int lawyerId, DateTime date)
         {
             if (lawyerId == LawyerId && ((date > Date && date < Date.AddHours(1)) || (date.AddHours(1) > Date && date.AddHours(1) < Date.AddHours(1))))
@@ -55,7 +57,7 @@ namespace final_project
 
         public override string ToString()
         {
-            return $"ID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {Date.ToLocalTime().ToString("U")}\nMeetingRoom: {MeetingRoom}\n";
+            return $"\nID: {Id}\nClient name: {ClientName}\nLawyer name: {LawyerName}\nDate: {Date.ToLocalTime().ToString("U")}\nMeeting room: {MeetingRoom}\n";
         }
     }
 }

@@ -21,27 +21,47 @@ namespace final_project
             Specialization = (Field)specialization;
         }
 
+        // takes user input and calls DbManager to create a new case in the database
         public override void AddNewCase(DbManager db)
         {
-            Console.WriteLine("You have chosen to register a new case");
+            Console.WriteLine("\nYou have chosen to register a new case.");
 
-            Console.WriteLine("Please type in the client's name");
-            string clientName = Console.ReadLine();
+            int clientId = 0;
+            int tryCount = 0;
+
+            while (clientId == 0)
+            {
+                if (tryCount > 0)
+                    Console.WriteLine("No such client found in database. Please try again.");
+
+                Console.WriteLine("\nPlease type in the client's name");
+                string clientName = Console.ReadLine();
+
+                clientId = db.GetFieldFromTableByColumn("client_id", "clients", "name", clientName);
+
+                tryCount++;
+            }
 
             int caseType = (int)Specialization;
 
-            Console.WriteLine("Date yyyy-MM-dd:");
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            Console.WriteLine("Please enter the case's start date in the format yyyy-MM-dd:");
+            DateTime date;
+
+            while (!DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            {
+                Console.WriteLine("\nYou have entered a wrong date format. Please try again.");
+            }
 
             Console.WriteLine("Total Charges:");
             string totalCharges = Console.ReadLine();
 
-            db.SetCase(Id, clientName, caseType, date, totalCharges);
+            db.SetCase(Id, clientId, caseType, date, totalCharges);
 
-            Console.WriteLine("You have successfully added a new case!");
+            Console.WriteLine("\nYou have successfully added a new case!");
 
         }
 
+        // prints all appointments for the given lawyer id fetched from the database
         public override void ListMyAppointments(DbManager db)
         {
             Console.WriteLine("You have chosen to list your appointments.\n");
@@ -56,6 +76,7 @@ namespace final_project
 
         }
 
+        // prints all cases for the given lawyer id fetched from the database
         public override void ListMyCases(DbManager db)
         {
             Console.WriteLine("You have chosen to list your cases.\n");
@@ -66,6 +87,11 @@ namespace final_project
                 Console.WriteLine(@case.ToString());
             }
             Console.WriteLine();
+        }
+
+        public int GetId()
+        {
+            return Id;
         }
     }
 }

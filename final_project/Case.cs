@@ -33,7 +33,7 @@ namespace final_project
 
         public override string ToString()
         {
-            return $"Client Name: {ClientName}\nCase type: {TypeOfCase}\nStartdate: {StartDate.ToShortDateString()}\nTotal charges: {TotalCharges}\n";
+            return $"Client Name: {ClientName}\nCase type: {TypeOfCase}\nStartdate: {StartDate.ToString("d")}\nTotal charges: {TotalCharges}\n";
         }
     }
 }

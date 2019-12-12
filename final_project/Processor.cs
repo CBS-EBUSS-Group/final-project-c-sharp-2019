@@ -7,6 +7,7 @@ namespace final_project
         private DbManager db;
         private Employee user;
 
+        // constructor instatiates the DbManager, calls database connection and seed creation
         public Processor()
         {
             db = new DbManager();
@@ -14,28 +15,31 @@ namespace final_project
             db.CreateSeed();
         }
 
+        // contains main program flow
         public void Process()
         {
-            Console.WriteLine("Welcome to the LegalX CRM System!");
+            Console.WriteLine("\nWelcome to the LegalX CRM System!");
 
             LoginProcess();
 
-            if (user is Lawyer)
+                if (user is Lawyer)
                     LawyerProgramFlow();
                 else if (user is AdminStaff)
                     AdminProgramFlow();
                 else if (user is Receptionist)
                     ReceptionistProgramFlow();
+
         }
 
+        // sets the logged in employee as user property, if credentials are correct
         private void LoginProcess()
         {
-            Console.WriteLine("Please login to your LegalX account with your username and password.");
+            Console.WriteLine("\nPlease login to your LegalX account with your username and password.");
 
-            Console.WriteLine("username:");
+            Console.WriteLine("Username:");
             string username = Console.ReadLine();
 
-            Console.WriteLine("password:");
+            Console.WriteLine("\nPassword:");
             string password = Console.ReadLine();
 
             user = db.Login(username, password);
@@ -49,7 +53,7 @@ namespace final_project
 
         private void LawyerProgramFlow()
         {
-            // print lawyer menu
+            // prints lawyer menu options
             int condition = 0;
             do
             {
@@ -80,7 +84,7 @@ namespace final_project
                     case "4":
                         user = null;
                         Console.WriteLine("You have successfully logged off.\n");
-                        LoginProcess();
+                        Process();
                         break;
 
                     case "5":
@@ -97,7 +101,7 @@ namespace final_project
 
         private void AdminProgramFlow()
         {
-            // print admin menu
+            // prints admin menu options
             int condition = 0;
             do
             {
@@ -121,8 +125,8 @@ namespace final_project
 
                     case "3":
                         user = null;
-                        Console.WriteLine("You have successfully logged off.\n");
-                        LoginProcess();
+                        Console.WriteLine("You have successfully logged off.");
+                        Process();
                         break;
 
                     case "4":
@@ -140,7 +144,7 @@ namespace final_project
 
         private void ReceptionistProgramFlow()
         {
-            // print receptionist menu
+            // prints receptionist menu options
             int condition = 0;
             do
             {
@@ -182,7 +186,7 @@ namespace final_project
                     case "6":
                         user = null;
                         Console.WriteLine("You have successfully logged off.\n");
-                        LoginProcess();
+                        Process();
                         break;
 
                     case "7":

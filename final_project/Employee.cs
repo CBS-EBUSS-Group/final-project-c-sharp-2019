@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace final_project
 {
@@ -18,7 +17,8 @@ namespace final_project
             JoinedOn = joinedOn;
         }
 
-        public virtual void Greeting() // Virtual method to greet users logging in. Allows access to private property FirstName. Is defined as virtual, in order to allow polymorphism with child classes.
+        // Method to greet users logging in. Allows access to private property FirstName.
+        public void Greeting()
         {
             Console.WriteLine($"\nWelcome {FirstName}, what do you want to do today?");
         }
@@ -27,6 +27,10 @@ namespace final_project
         {
             return $"Id: {Id}\nName: {FirstName} {LastName}\nJoined on: {JoinedOn.ToShortDateString()}";
         }
+
+
+        // All methods below are implemented on an employee level to allow for polymorphic behaviour
+
 
         public virtual void AddNewClient(DbManager db)
         {
