@@ -71,11 +71,6 @@ Please follow the listed steps to set up the console application correctly on yo
 ```
 
 Created by:
-
-[Maxwell Burda](https://github.com/MCBurda)
-
-[Dorian Nguyen](https://github.com/orgs/CBS-EBUSS-Group/people/doriannguyen)
-
-[Dominik Gadesmann](https://github.com/domgdsman)
+[Maxwell Burda](https://github.com/MCBurda), [Dorian Nguyen](https://github.com/orgs/CBS-EBUSS-Group/people/doriannguyen), [Dominik Gadesmann](https://github.com/domgdsman)
 
 Uploaded: 13-12-2019
