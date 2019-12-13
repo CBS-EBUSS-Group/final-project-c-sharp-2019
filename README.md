@@ -51,8 +51,8 @@ Please follow the listed steps to set up the console application correctly on yo
 1. Open the final_project.sln
 2. Navigate to the ENV.cs file in the solution manager
 3. Open the ENV.cs file. There will be two properties of the C# class that you need to change (indicated below):
-    a) SQLite URI - Here you will need to add your systems path to a directory where you would like to save the SQLite database, which will be created on first program start.
-    b) SeedData - Here you enter the local root path of the application + /final_project/seed/seed.txt
+    1. SQLite URI - Here you will need to add your systems path to a directory where you would like to save the SQLite database, which will be created on first program start.
+    2. SeedData - Here you enter the local root path of the application + /final_project/seed/seed.txt
 4. Open NuGet package manager and download/install Mono.Data.SQLite, which is used to access the SQLite database in this application
 5. If you are on windows, you might have to naviage to your project settings (top of screen Project > properties) and change the build settings to run the program with x64 bit architecture.
 6. Build the Solution and Run it. The application should compile and build a database for you based on the seed.
