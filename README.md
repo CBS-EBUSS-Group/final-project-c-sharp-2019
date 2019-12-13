@@ -1,10 +1,8 @@
-# CBS Course Introduction to Programming and Application Design (C#) ![alt text](cbs-logo.png?raw=true "CBS")
+# CBS Course Introduction to Programming and Application Design (C#) - Final Project
 
-## Final Project
+**This project was created by students of [Copenhagen Business School](https://www.cbs.dk/en) (CBS) in the course of the Master's degree in Business Administration and E-business:**
 
-**This project was created by students of Copenhagen Business School ([CBS](https://www.cbs.dk/en)) in the course of the Master's degree in Business Administration and E-business:**
-
-###### Specs of the application
+## General requirements and application specs
 
 The task was to build a console application in C# applying object-oriented programming principles.
 
@@ -39,14 +37,14 @@ Company has clients from different areas in Gotham city and clients are assigned
   ..- List all cases
   ..- List all appointments
 
-###### Solution
+## Solution
 
 We decided to use a simple SQlite database as data storage for our application. When the initial setup runs, seed data is read in from a text file and written to the database.
 We created three different, user-dependent workflows and an Employee class hierarchy to allow for polymorphism. All console operations are conducted in the Employee's child classes, while database communications happen in the DbManager class.
 
 Enjoy the program :)
 
-###### Instructions
+## Instructions
 
 Please follow the listed steps to set up the console application correctly on your PC:
 
@@ -73,8 +71,11 @@ Please follow the listed steps to set up the console application correctly on yo
 ```
 
 Created by:
+
 [Maxwell Burda](https://github.com/MCBurda)
+
 [Dorian Nguyen](https://github.com/orgs/CBS-EBUSS-Group/people/doriannguyen)
+
 [Dominik Gadesmann](https://github.com/domgdsman)
 
 Uploaded: 13-12-2019
